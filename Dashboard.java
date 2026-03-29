@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
+
 
 // Background Panel
 class BackgroundPanel extends JPanel {
@@ -125,8 +127,8 @@ class RoundedButton extends JButton {
 
 // Main Dashboard
 public class Dashboard {
-    public static void main(String[] args) {
-
+    
+    public Dashboard() {
         JFrame frame = new JFrame("Mini Game Hub");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -141,6 +143,7 @@ public class Dashboard {
         String[] games = {"Sudoku", "Word Jumble", "Math Challenge", "Guess Word"};
 
         for (int i = 0; i < 4; i++) {
+            final int index = i;
             RoundedPanel card = new RoundedPanel();
             card.setLayout(new BorderLayout(10, 10));
 
@@ -154,6 +157,27 @@ public class Dashboard {
             image.setHorizontalAlignment(JLabel.CENTER);
 
             RoundedButton playBtn = new RoundedButton("PLAY");
+
+            playBtn.addActionListener(e -> {
+                frame.dispose(); // Close dashboard 
+                switch (index) {
+                    case 0:
+                        new SudokuGUI();
+                        break;
+                    case 1:
+                        new SudokuGUI();
+                        break;
+                    case 2:
+                        new SudokuGUI();
+                        break;
+                    case 3:
+                        new SudokuGUI();
+                        break;
+                }
+            });
+            
+            
+
             playBtn.setPreferredSize(new Dimension(100, 40));
 
             JPanel btnPanel = new JPanel();
@@ -170,5 +194,9 @@ public class Dashboard {
         background.add(centerPanel);
         frame.setContentPane(background);
         frame.setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+        new Dashboard();
     }
 }
