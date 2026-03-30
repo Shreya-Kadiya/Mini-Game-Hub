@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,6 +25,13 @@ public class SudokuGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        //back button
+       RoundedButton backButton = new RoundedButton("Back");
+       backButton.setBounds(20, 20, 100, 40);
+         backButton.addActionListener(e -> {
+              frame.dispose(); // Close Sudoku window
+              new Dashboard(); // Open Dashboard
+    });
         // Create JLayeredPane
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(null); // Use absolute positioning
@@ -95,7 +103,8 @@ public class SudokuGUI {
       
        layeredPane.add(gridPanel, JLayeredPane.PALETTE_LAYER); // Higher layer 
        frame.setContentPane(layeredPane);
-
+        frame.setLayout(null);
+        layeredPane.add(backButton, JLayeredPane.MODAL_LAYER); // Top layer for back button
         frame.setVisible(true);
     }
 
