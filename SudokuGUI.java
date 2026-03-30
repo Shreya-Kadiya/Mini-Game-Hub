@@ -1,62 +1,57 @@
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-
-class BackgroundPanel extends JPanel {
-    private BufferedImage backgroundImage;
-
-    public BackgroundPanel(String imagePath) {
-        try {
-            backgroundImage = ImageIO.read(new File(imagePath));
-        } catch (Exception e) {
-            System.out.println("Error loading background: " + e.getMessage());
-        }
-        setLayout(null);
-    }
-
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        }
-    }
-}
-
-
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class SudokuGUI {
+    private BufferedImage getScaledImage(String path, int width, int height) {
+        try {
+            BufferedImage originalImage = ImageIO.read(new File(path));
+            Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = result.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, null);
+            g2d.dispose();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public SudokuGUI() {
         JFrame frame = new JFrame("Sudoku");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        BackgroundPanel background = new BackgroundPanel("src\\Sudoku.png");
-        frame.setContentPane(background);
+        // Create JLayeredPane
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null); // Use absolute positioning
+        layeredPane.setBackground(new Color(20, 20, 20));
 
-        JButton backBtn = new JButton("← Back");
-        backBtn.setBounds(20, 20, 100, 40); // top-left position
+        // Add background image as a label (bottom layer)
+        BufferedImage bgImage = getScaledImage("src\\Sudoku.png", 1024, 768);
+        JLabel backgroundLabel = new JLabel(new ImageIcon(bgImage));
+        backgroundLabel.setBounds(0, 0, 1024, 768); // Initial bounds
+        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+        
+        // Update background size when window is resized
+        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                BufferedImage scaledBg = getScaledImage("src\\Sudoku.png", frame.getWidth(), frame.getHeight());
+                backgroundLabel.setIcon(new ImageIcon(scaledBg));
+                backgroundLabel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+            }
+        });
 
-        backBtn.setFocusPainted(false);
-        backBtn.setFont(new Font("Arial bold", Font.BOLD, 16));
-        backBtn.setBackground(new Color(210,221,250));//back button background color
-        backBtn.setBorder(BorderFactory.createLineBorder(new Color(6,31,95), 4));//back button border
-        backBtn.addActionListener(e -> {
-            frame.dispose(); // close Sudoku window
-            new Dashboard();// open your dashboard
-            });
 
-        background.add(backBtn);
-
-        // 🎯 Sudoku Grid
+        // Add your gridPanel on top (higher layer)
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(4, 4));
         gridPanel.setBounds(500, 170, 500, 500);
         gridPanel.setOpaque(true);
-        gridPanel.setBackground(new Color(250,250,250));// 
-        gridPanel.setBorder(BorderFactory.createLineBorder(new Color(18,4,85),4));
+        gridPanel.setBackground(new Color(250, 250, 250));
+        gridPanel.setBorder(BorderFactory.createLineBorder(new Color(18, 4, 85), 4));
        
         JTextField[][] cells = new JTextField[4][4];
         for (int i = 0; i < 4; i++) {
@@ -92,17 +87,14 @@ public class SudokuGUI {
                 }
             );
                 
-
-            
-             
                 cells[i][j] = cell;
                 gridPanel.add(cell);
             }
         }
 
       
-
-        background.add(gridPanel);
+       layeredPane.add(gridPanel, JLayeredPane.PALETTE_LAYER); // Higher layer 
+       frame.setContentPane(layeredPane);
 
         frame.setVisible(true);
     }
@@ -113,12 +105,3 @@ public class SudokuGUI {
         new SudokuGUI();
     }
 }
-        
-
-        // frame.setSize(500, 500);
-        // frame.setLocationRelativeTo(null);
-        // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // JLabel label = new JLabel("Sudoku Game Screen", JLabel.CENTER);
-        // label.setFont(new Font("Arial", Font.BOLD, 20));
-        // frame.add(label);
-    
