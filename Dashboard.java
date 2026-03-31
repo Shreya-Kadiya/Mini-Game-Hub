@@ -183,7 +183,7 @@ public class Dashboard {
                         new WordJumbleGUI();
                         break;
                     case 2:
-                        new MathChallngeGUI();
+                        new MathChallangeGUI();
                         break;
                     case 3:
                         new WordDecodeGUI();
