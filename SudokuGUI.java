@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class SudokuGUI {
-    private BufferedImage getScaledImage(String path, int width, int height) {
+    public BufferedImage getScaledImage(String path, int width, int height) {
         try {
             BufferedImage originalImage = ImageIO.read(new File(path));
             Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -32,7 +32,7 @@ public class SudokuGUI {
               frame.dispose(); // Close Sudoku window
               new Dashboard(); // Open Dashboard
     });
-        // Create JLayeredPane
+        // Create JLayeredPa
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(null); // Use absolute positioning
         layeredPane.setBackground(new Color(20, 20, 20));
@@ -52,6 +52,26 @@ public class SudokuGUI {
             }
         });
 
+
+        
+        JTextArea rulesArea = new JTextArea(
+            "                    Rules:\n\n" +
+            "• Fill the 4x4 grid with numbers 1 to 4\n" +
+            "• Each number must appear only once \n in every row\n" +
+            "• Each number must appear only once \n in every column\n" +
+            "• Each 2x2 box must contain numbers \n 1 to 4 without repetition\n" +
+            "• Do not change the pre-filled numbers\n" +
+            "• Complete the grid correctly to win\n\n" +
+            "       Use logic, not guessing!"
+        );
+
+        rulesArea.setEditable(false);
+        rulesArea.setOpaque(false);
+        rulesArea.setFont(new Font("Arial BOLD", Font.PLAIN, 20));
+        rulesArea.setForeground(new Color(128,11,63));
+        rulesArea.setBounds(1050, 200, 750, 800);
+        layeredPane.add(rulesArea, JLayeredPane.PALETTE_LAYER);
+        
 
         // Add your gridPanel on top (higher layer)
         JPanel gridPanel = new JPanel();
@@ -100,13 +120,37 @@ public class SudokuGUI {
             }
         }
 
+
+
+        //check button
+        RoundedButton checkButton = new RoundedButton("CHECK");
+        checkButton.setBounds(850, 700, 150, 40);
+         checkButton.addActionListener(e -> {
+            //check logic
+         });
+         //reset button
+        RoundedButton resetButton = new RoundedButton("RESET");
+        resetButton.setBounds(500, 700, 150, 40);
+         resetButton.addActionListener(e -> {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    cells[i][j].setText("");
+                }
+            }
+            });
+
+
+
       
-       layeredPane.add(gridPanel, JLayeredPane.PALETTE_LAYER); // Higher layer 
-       frame.setContentPane(layeredPane);
+        layeredPane.add(gridPanel, JLayeredPane.PALETTE_LAYER); // Higher layer 
+        frame.setContentPane(layeredPane);
         frame.setLayout(null);
         layeredPane.add(backButton, JLayeredPane.MODAL_LAYER); // Top layer for back button
+        layeredPane.add(checkButton, JLayeredPane.MODAL_LAYER); // Top layer for check button
+        layeredPane.add(resetButton, JLayeredPane.MODAL_LAYER); // Top layer for reset button
         frame.setVisible(true);
     }
+    
 
 
 
