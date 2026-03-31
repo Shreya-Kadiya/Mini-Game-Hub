@@ -92,6 +92,6 @@ public class MathChallangeGUI {
     }
 
     public static void main(String[] args) {
-        new MathChallngeGUI();
+        new MathChallangeGUI();
 }
 }
