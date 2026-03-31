@@ -6,53 +6,33 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class SudokuGUI {
-    public BufferedImage getScaledImage(String path, int width, int height) {
-        try {
-            BufferedImage originalImage = ImageIO.read(new File(path));
-            Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = result.createGraphics();
-            g2d.drawImage(scaledImage, 0, 0, null);
-            g2d.dispose();
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
+
     public SudokuGUI() {
+
+
+        
         JFrame frame = new JFrame("Sudoku");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        BackgroundPanel panel = new BackgroundPanel("src/Sudoku.png");
+        frame.setContentPane(panel);
+
         //back button
-       RoundedButton backButton = new RoundedButton("Back");
-       backButton.setBounds(20, 20, 100, 40);
-         backButton.addActionListener(e -> {
+        RoundedButton backButton = new RoundedButton("Back",
+                    new Color(5, 72, 149), // normal
+                    new Color(26, 3, 85),  // hover
+                    new Color(48, 14, 186) // pressed   
+                );
+        backButton.setBounds(20, 20, 100, 40);
+        backButton.addActionListener(e -> {
               frame.dispose(); // Close Sudoku window
               new Dashboard(); // Open Dashboard
     });
-        // Create JLayeredPa
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setLayout(null); // Use absolute positioning
-        layeredPane.setBackground(new Color(20, 20, 20));
+   
 
-        // Add background image as a label (bottom layer)
-        BufferedImage bgImage = getScaledImage("src\\Sudoku.png", 1024, 768);
-        JLabel backgroundLabel = new JLabel(new ImageIcon(bgImage));
-        backgroundLabel.setBounds(0, 0, 1024, 768); // Initial bounds
-        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
-        
-        // Update background size when window is resized
-        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent e) {
-                BufferedImage scaledBg = getScaledImage("src\\Sudoku.png", frame.getWidth(), frame.getHeight());
-                backgroundLabel.setIcon(new ImageIcon(scaledBg));
-                backgroundLabel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            }
-        });
-
-
+       
         
         JTextArea rulesArea = new JTextArea(
             "                    Rules:\n\n" +
@@ -70,7 +50,7 @@ public class SudokuGUI {
         rulesArea.setFont(new Font("Arial BOLD", Font.PLAIN, 20));
         rulesArea.setForeground(new Color(128,11,63));
         rulesArea.setBounds(1050, 200, 750, 800);
-        layeredPane.add(rulesArea, JLayeredPane.PALETTE_LAYER);
+       
         
 
         // Add your gridPanel on top (higher layer)
@@ -123,13 +103,21 @@ public class SudokuGUI {
 
 
         //check button
-        RoundedButton checkButton = new RoundedButton("CHECK");
+        RoundedButton checkButton = new RoundedButton("CHECK",
+                   new Color(5, 72, 149), // normal
+                    new Color(26, 3, 85),  // hover
+                    new Color(48, 14, 186) // pressed 
+        );
         checkButton.setBounds(850, 700, 150, 40);
-         checkButton.addActionListener(e -> {
+        checkButton.addActionListener(e -> {
             //check logic
          });
          //reset button
-        RoundedButton resetButton = new RoundedButton("RESET");
+        RoundedButton resetButton = new RoundedButton("RESET",
+                    new Color(5, 72, 149), // normal
+                    new Color(26, 3, 85),  // hover
+                    new Color(48, 14, 186) // pressed   
+                );
         resetButton.setBounds(500, 700, 150, 40);
          resetButton.addActionListener(e -> {
             for (int i = 0; i < 4; i++) {
@@ -142,17 +130,18 @@ public class SudokuGUI {
 
 
       
-        layeredPane.add(gridPanel, JLayeredPane.PALETTE_LAYER); // Higher layer 
-        frame.setContentPane(layeredPane);
-        frame.setLayout(null);
-        layeredPane.add(backButton, JLayeredPane.MODAL_LAYER); // Top layer for back button
-        layeredPane.add(checkButton, JLayeredPane.MODAL_LAYER); // Top layer for check button
-        layeredPane.add(resetButton, JLayeredPane.MODAL_LAYER); // Top layer for reset button
+         frame.add(backButton);
+        frame.add(checkButton);
+        frame.add(resetButton);
+        frame.add(rulesArea);
+        frame.add(gridPanel);
+
+        frame.setContentPane(panel);
         frame.setVisible(true);
+
+
     }
     
-
-
 
     public static void main(String[] args) {
         new SudokuGUI();
