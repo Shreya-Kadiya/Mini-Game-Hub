@@ -8,27 +8,6 @@ import java.io.File;
 import java.io.IOException;
 
 
-// Background Panel
-class BackgroundPanel extends JPanel {
-    private BufferedImage backgroundImage;
-
-    public BackgroundPanel(String imagePath) {
-        try {
-            backgroundImage = ImageIO.read(new File(imagePath));
-        } catch (Exception e) {
-            System.out.println("Error loading background: " + e.getMessage());
-        }
-        setLayout(null);
-    }
-
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        }
-    }
-}
-
 // Card Panel
 class RoundedPanel extends JPanel {
     private int cornerRadius = 40;
@@ -127,20 +106,56 @@ class RoundedButton extends JButton {
 
 // Main Dashboard
 public class Dashboard {
+
+    //Background Image Scaling
+    public BufferedImage getScaledImage(String path, int width, int height) {
+        try {
+            BufferedImage originalImage = ImageIO.read(new File(path));
+            Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = result.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, null);
+            g2d.dispose();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     public Dashboard() {
         JFrame frame = new JFrame("Mini Game Hub");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        BackgroundPanel background = new BackgroundPanel("src\\bgimg2.png");
 
+        // Create JLayeredPane
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null); // Use absolute positioning
+        layeredPane.setBackground(new Color(20, 20, 20));
+
+        // Add background image as a label (bottom layer)
+        BufferedImage bgImage = getScaledImage("src\\Sudoku.png", 1024, 768);
+        JLabel backgroundLabel = new JLabel(new ImageIcon(bgImage));
+        backgroundLabel.setBounds(0, 0, 1024, 768); // Initial bounds
+        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+        
+        // Update background size when window is resized
+        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                BufferedImage scaledBg = getScaledImage("src\\bgimg2.png", frame.getWidth(), frame.getHeight());
+                backgroundLabel.setIcon(new ImageIcon(scaledBg));
+                backgroundLabel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+            }
+        });
+        
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridLayout(1, 4, 20, 40));
         centerPanel.setBounds(340, 250, 850, 300);
         centerPanel.setOpaque(false);
+        layeredPane.add(centerPanel, JLayeredPane.PALETTE_LAYER);
 
-        String[] games = {"Sudoku", "Word Jumble", "Math Challenge", "Guess Word"};
+        String[] games = {"Sudoku", "Word Jumble", "Math Challenge", "Word Decode"};
 
         for (int i = 0; i < 4; i++) {
             final int index = i;
@@ -165,13 +180,13 @@ public class Dashboard {
                         new SudokuGUI();
                         break;
                     case 1:
-                        new SudokuGUI();
+                        new WordJumbleGUI();
                         break;
                     case 2:
-                        new SudokuGUI();
+                        new MathChallngeGUI();
                         break;
                     case 3:
-                        new SudokuGUI();
+                        new WordDecodeGUI();
                         break;
                 }
             });
@@ -190,9 +205,8 @@ public class Dashboard {
 
             centerPanel.add(card);
         }
-
-        background.add(centerPanel);
-        frame.setContentPane(background);
+        frame.setContentPane(layeredPane);
+        
         frame.setVisible(true);
     }
     
