@@ -1,9 +1,6 @@
 
 import javax.swing.*;
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class SudokuGUI {
 
@@ -73,23 +70,23 @@ public class SudokuGUI {
                 cell.setFont(new Font("Arial", Font.BOLD, 50));
                 cell.setBorder(BorderFactory.createLineBorder(new Color(36,24,93), 2));//color of cell border
                 if ((i / 2 + j / 2) % 2 == 0) {
-                    cell.setBackground(new Color(249,199,229)); // light variation
+                    cell.setBackground(new Color(246,207,179)); // light variation
                 } 
                 else {
-                    cell.setBackground(new Color(244,129,199)); // dark variation
+                    cell.setBackground(new Color(247,181,134)); // dark variation
                 }
 
 
                 cell.addFocusListener(new java.awt.event.FocusAdapter() {
                     public void focusGained(java.awt.event.FocusEvent e) {
-                        cell.setBackground(new Color(238,27,116)); // highlight
+                        cell.setBackground(new Color(251,236,225)); // highlight
                     }
 
                     public void focusLost(java.awt.event.FocusEvent e) {
                         if ((row/ 2 + col/ 2) % 2 == 0) {
-                            cell.setBackground(new Color(249,199,229));
+                            cell.setBackground(new Color(246,207,179));
                         } else {
-                            cell.setBackground(new Color(244,129,199));
+                            cell.setBackground(new Color(247,181,134));
                         }
                     }
                 }
