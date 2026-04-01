@@ -24,8 +24,8 @@ public class SudokuGUI {
                 );
         backButton.setBounds(20, 20, 100, 40);
         backButton.addActionListener(e -> {
-              frame.dispose(); // Close Sudoku window
               new Dashboard(); // Open Dashboard
+              frame.dispose(); 
     });
    
 

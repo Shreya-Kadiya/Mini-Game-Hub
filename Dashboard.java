@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 
-//  Background Panel (NEW)
+//  Background Panel 
 class BackgroundPanel extends JPanel {
     private BufferedImage backgroundImage;
 
@@ -18,14 +18,16 @@ class BackgroundPanel extends JPanel {
     }
 
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        
         if (backgroundImage != null) {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         }
     }
 }
 
+
 // Card Panel
+
 class RoundedPanel extends JPanel {
     private int cornerRadius = 40;
 
@@ -38,17 +40,18 @@ class RoundedPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2.setColor(new Color(0, 0, 0, 60));
+        // Shadow effect
+        g2.setColor(new Color(0, 0, 0, 40));
         g2.fillRoundRect(5, 5, getWidth() - 5, getHeight() - 5, cornerRadius, cornerRadius);
-
+        // Panel background
         g2.setColor(new Color(255, 255, 255, 40));
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
-
+        // Border
         g2.setColor(new Color(255, 255, 255, 120));
         g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
     }
 }
+
 
 
 class RoundedButton extends JButton {
@@ -62,12 +65,15 @@ class RoundedButton extends JButton {
     private Color hoverColor;
     private Color pressedColor;
 
-    //  Simple constructor with default colors
+    
     public RoundedButton(String text) {
-        this(text, new Color(70, 130, 180), new Color(100, 160, 210), new Color(50, 100, 150));
+        this(text, 
+            new Color(70, 130, 180), 
+            new Color(100, 160, 210), 
+            new Color(50, 100, 150));
     }
 
-    //  Constructor with colors
+   
     public RoundedButton(String text, Color normal, Color hover, Color pressed) {
         super(text);
 
@@ -80,7 +86,7 @@ class RoundedButton extends JButton {
         setBorderPainted(false);
         setOpaque(false);
 
-        setForeground(Color.WHITE);
+        setForeground(Color.WHITE);// Text color
         setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 18));
        
 
@@ -157,6 +163,7 @@ class RoundedButton extends JButton {
 }
 
 
+
 public class Dashboard {
 
     public Dashboard() {
@@ -198,13 +205,14 @@ public class Dashboard {
             );
 
             playBtn.addActionListener(e -> {
-                frame.dispose();
+                
                 switch (index) {
                     case 0: new SudokuGUI(); break;
                     case 1: new WordJumbleGUI(); break;
                     case 2: new MathChallangeGUI(); break;
                     case 3: new WordDecodeGUI(); break;
                 }
+                frame.dispose();
             });
 
             playBtn.setPreferredSize(new Dimension(100, 40));

@@ -1,8 +1,5 @@
 import javax.swing.*;
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class WordJumbleGUI {
     
@@ -25,8 +22,8 @@ public class WordJumbleGUI {
                 );
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              frame.dispose(); // Close Sudoku window
               new Dashboard(); // Open Dashboard
+              frame.dispose(); 
         });
         
 
