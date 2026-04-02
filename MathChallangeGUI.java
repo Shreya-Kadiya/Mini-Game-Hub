@@ -86,6 +86,10 @@ public class MathChallangeGUI {
             new Color(48, 14, 186) // pressed   
         );
         level_M.setBounds(700, 350, 150, 40);
+        level_M.addActionListener(e -> {
+            new MathGameScreen("Medium");
+            frame.dispose();
+        });
 
         //High score for medium level
         JLabel HSM = new JLabel("High Score" + highScores[1]);
@@ -103,7 +107,11 @@ public class MathChallangeGUI {
             new Color(26, 3, 85),  // hover
             new Color(48, 14, 186) // pressed   
         );
-        level_H.setBounds(1000, 350, 150, 40);        
+        level_H.setBounds(1000, 350, 150, 40); 
+        level_H.addActionListener(e -> {
+            new MathGameScreen("Hard");
+            frame.dispose();
+        });       
 
         //High score for hard level
         JLabel HSH = new JLabel("High Score " + highScores[2]);
