@@ -104,6 +104,6 @@ public class MathGameOver {
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        new GameOverScreen("Time's Up", 20, 15, "Medium");
+        new MathGameOver("Time's Up", 20, 15, "Medium");
     }
 }

@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 import java.io.*;
+import java.util.Random;
 
 public class MathGameScreen {
 
@@ -16,7 +16,7 @@ public class MathGameScreen {
 
     int score = 0;
     int streak = 0;
-    int wrong = 5; // ✅ life system
+    int wrong = 5; //life
 
     int timeLeft = 30;
     Timer gameTimer;
@@ -270,7 +270,7 @@ public class MathGameScreen {
         if (newHigh) message += "\n<h1> New High Score!<h1>";
 
         frame.dispose();
-        new GameOverScreen(reason, score, getHighScore(), difficulty);
+        new MathGameOver(reason, score, getHighScore(), difficulty);
 
        
     }

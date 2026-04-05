@@ -1,11 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+
 
 public class MathChallangeGUI {
 
@@ -174,7 +170,7 @@ public class MathChallangeGUI {
     private void loadHighScores() {
     try {
         BufferedReader br = new BufferedReader(new FileReader("highscore.txt"));
-
+        br.readLine(); // skip line 1
         highScoreEasy = Integer.parseInt(br.readLine());
         highScoreMedium = Integer.parseInt(br.readLine());
         highScoreHard = Integer.parseInt(br.readLine());
