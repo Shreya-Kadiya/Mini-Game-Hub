@@ -11,23 +11,6 @@ public class WordJumbleGUI {
     
     public WordJumbleGUI() {
 
-
-
-
-        File file = new File("highscore.txt");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                bw.write("0\n0\n0\n"); // initialize high scores
-                bw.close();
-            } catch (IOException e) {
-                System.out.println("Error initializing high score file");
-            }
-        }
-        loadHighScores();
-
-
         JFrame frame = new JFrame("Math challange");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -99,7 +82,8 @@ public class WordJumbleGUI {
         );
         level_E.setBounds(400, 400, 150, 40);
         level_E.addActionListener(e -> {
-            
+           new WordJumbleScreen("Easy");
+           frame.dispose();            
             
         });
          //High score for easy level
@@ -120,7 +104,8 @@ public class WordJumbleGUI {
         );
         level_M.setBounds(700, 400, 150, 40);
         level_M.addActionListener(e -> {
-           
+           new WordJumbleScreen("Medium");
+           frame.dispose();
             
         });
 
@@ -141,7 +126,9 @@ public class WordJumbleGUI {
             new Color(48, 14, 186) // pressed   
         );
         level_H.setBounds(1000, 400, 150, 40); 
-        level_H.addActionListener(e -> {          
+        level_H.addActionListener(e -> {    
+            new WordJumbleScreen("Hard2");
+           frame.dispose();      
         });       
 
         
@@ -173,22 +160,8 @@ public class WordJumbleGUI {
     }
 
 
-    private void loadHighScores() {
-    try {
-        BufferedReader br = new BufferedReader(new FileReader("highscore.txt"));
-        br.readLine(); 
-        br.readLine(); 
-        br.readLine(); 
-        br.readLine(); 
-        highScoreEasy = Integer.parseInt(br.readLine());
-        highScoreMedium = Integer.parseInt(br.readLine());
-        highScoreHard = Integer.parseInt(br.readLine());
 
-        br.close();
-    } catch (Exception e) {
-        System.out.println("Error loading high score");
-    }
-}
+
 
 
 public static void main(String[] args) {

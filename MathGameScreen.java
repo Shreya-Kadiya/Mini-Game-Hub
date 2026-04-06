@@ -16,7 +16,7 @@ public class MathGameScreen {
 
     int score = 0;
     int streak = 0;
-    int wrong = 5; //life
+    int wrong = 5; 
 
     int timeLeft = 30;
     Timer gameTimer;
@@ -120,6 +120,8 @@ public class MathGameScreen {
         startTimer();
     }
 
+
+    // Question generation and answer checking methods
     private void generateQuestion() {
         Random rand = new Random();
 
@@ -140,7 +142,7 @@ public class MathGameScreen {
         }
 
         else if (difficulty.equals("Medium")) {
-            num1 = rand.nextInt(20) + 1;
+            num1 = rand.nextInt(10) + 1;
             num2 = rand.nextInt(15) + 1;
             num3 = rand.nextInt(10) + 1;
 
@@ -166,6 +168,7 @@ public class MathGameScreen {
         resultLabel.setForeground(Color.BLACK);
     }
 
+    //operators and calculation methods 
     private char getOperator(Random rand) {
         int op = rand.nextInt(3);
         return (op == 0) ? '+' : (op == 1) ? '-' : '*';
@@ -175,6 +178,9 @@ public class MathGameScreen {
         return (op == '+') ? a + b : (op == '-') ? a - b : a * b;
     }
 
+
+
+    // Answer checking
     private void checkAnswer() {
         String input = answerField.getText();
 
@@ -206,7 +212,7 @@ public class MathGameScreen {
         } else {
             wrong--;
             streak = 0;
-            resultLabel.setText("Wrong! Ans: " + correctAnswer);
+            resultLabel.setText("Wrong!! Correct ans: " + correctAnswer);
             resultLabel.setForeground(Color.RED);
         }
 
@@ -221,19 +227,21 @@ public class MathGameScreen {
             return;
         }
 
-        new Timer(800, e -> generateQuestion()) {{
+        new Timer(500, e -> generateQuestion()) {{
             setRepeats(false);
             start();
         }};
     }
 
+
+    //Timer
     private void startTimer() {
         gameTimer = new Timer(1000, e -> {
             timeLeft--;
             timerLabel.setText("Time: " + timeLeft);
 
             if (timeLeft <= 5) {
-                timerLabel.setFont(new Font("Arial", Font.BOLD, 24));
+                timerLabel.setFont(new Font("Arial", Font.BOLD, 30));
                 timerLabel.setForeground(Color.RED);
             }
 
@@ -245,6 +253,7 @@ public class MathGameScreen {
         gameTimer.start();
     }
     
+    //End game
     private void endGame(String reason) {
         if (gameTimer != null) gameTimer.stop();
 
@@ -275,10 +284,20 @@ public class MathGameScreen {
        
     }
 
+    // High score methods
     private int getHighScore() {
-        if (difficulty.equals("Easy")) return highScoreEasy;
-        if (difficulty.equals("Medium")) return highScoreMedium;
-        return highScoreHard;
+        if(difficulty.equals("Easy"))
+        {
+            return highScoreEasy;
+        }
+        else if(difficulty.equals("Medium"))
+        {
+            return highScoreMedium;
+        }
+        else
+        {
+            return highScoreHard;
+        }
     }
 
     private void createFileIfNotExists() {

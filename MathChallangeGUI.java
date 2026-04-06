@@ -12,15 +12,12 @@ public class MathChallangeGUI {
     
     public MathChallangeGUI() {
 
-
-
-
         File file = new File("highscore.txt");
         if (!file.exists()) {
             try {
                 file.createNewFile();
                 BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                bw.write("0\n0\n0\n"); // initialize high scores
+                bw.write("0\n0\n0\n"); 
                 bw.close();
             } catch (IOException e) {
                 System.out.println("Error initializing high score file");
@@ -45,7 +42,7 @@ public class MathChallangeGUI {
        
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              new Dashboard(); // Open Dashboard
+              new Dashboard(); 
               frame.dispose(); 
         });     
     
@@ -94,6 +91,8 @@ public class MathChallangeGUI {
             new MathGameScreen("Easy");
             frame.dispose();
         });
+
+    
          //High score for easy level
         JLabel HSE = new JLabel("High Score" + highScoreEasy);
         HSE.setText("High Score: "+ highScoreEasy);
@@ -173,7 +172,6 @@ public class MathChallangeGUI {
         highScoreEasy = Integer.parseInt(br.readLine());
         highScoreMedium = Integer.parseInt(br.readLine());
         highScoreHard = Integer.parseInt(br.readLine());
-
         br.close();
     } catch (Exception e) {
         System.out.println("Error loading high score");

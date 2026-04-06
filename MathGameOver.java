@@ -38,20 +38,14 @@ public class MathGameOver {
             newHigh.setForeground(Color.GREEN.darker());
             newHigh.setFont(new Font("Arial", Font.BOLD, 35));
             panel.add(newHigh);
-            
         }
-
-
         else{          
 
-        // High Score
-        JLabel highScoreLabel = new JLabel("High Score: " + highScore);
-        highScoreLabel.setBounds(700, 440, 400, 40);
-        highScoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        highScoreLabel.setForeground(Color.BLUE);
-
-        
-        panel.add(highScoreLabel);
+            JLabel highScoreLabel = new JLabel("High Score: " + highScore);
+            highScoreLabel.setBounds(700, 440, 400, 40);
+            highScoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            highScoreLabel.setForeground(Color.BLUE);
+            panel.add(highScoreLabel);
         }
 
         // Play Again Button
