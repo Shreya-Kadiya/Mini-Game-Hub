@@ -170,7 +170,6 @@ public class MathChallangeGUI {
     private void loadHighScores() {
     try {
         BufferedReader br = new BufferedReader(new FileReader("highscore.txt"));
-        br.readLine(); // skip line 1
         highScoreEasy = Integer.parseInt(br.readLine());
         highScoreMedium = Integer.parseInt(br.readLine());
         highScoreHard = Integer.parseInt(br.readLine());
