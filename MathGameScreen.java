@@ -21,9 +21,9 @@ public class MathGameScreen {
     int timeLeft = 30;
     Timer gameTimer;
 
-    static int highScoreEasy = 0;
-    static int highScoreMedium = 0;
-    static int highScoreHard = 0;
+    int highScoreEasy = 0;
+    int highScoreMedium = 0;
+    int highScoreHard = 0;
 
     public MathGameScreen(String difficulty) {
         this.difficulty = difficulty;
@@ -276,12 +276,14 @@ public class MathGameScreen {
                 "\nGame Over \nScore: " + score +
                 "\nHigh Score: " + getHighScore();
 
-        if (newHigh) message += "\n<h1> New High Score!<h1>";
+        if (newHigh)
+            { 
+                message +=  "\n<h1> New High Score!<h1>";
+            }
 
-        frame.dispose();
+        
         new MathGameOver(reason, score, getHighScore(), difficulty);
-
-       
+        frame.dispose();
     }
 
     // High score methods

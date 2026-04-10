@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+
 
 public class WordJumbleGUI {
 
@@ -44,27 +44,31 @@ public class WordJumbleGUI {
          HTP.addActionListener(e -> {
             String rules = "Word Jumble Rules:\n\n"+
             
-                    "• Start with 3 lives. Game ends when lives = 0.\n" +
+                    "• You start with 3 lives.\n" +
+                    "• Guess the correct word from jumbled letters.\n\n" +
+                    
                     "• Attempts per word:\n" +
-                    "    - Easy/Medium: 2 attempts\n" +
-                    "    - Hard: 3 attempts\n" +
-                    "• Scoring (performance-based):\n" +
-                    "    - Easy: 1st=10, 2nd=5\n" +
-                    "    - Medium: 1st=15, 2nd=10\n" +
-                    "    - Hard: 1st=20, 2nd=15, 3rd=10\n" +
-                    "• Streak bonus:\n" +
-                    "    - Every correct answer adds 1 streak\n" +
-                    "    - Streak 3 → +10 points & +1 life\n" +
-                    "• Skip feature:\n" +
-                    "    - Allowed anytime\n" +
-                    "    - Penalty: Easy=-2, Medium=-4, Hard=-6\n" +
-                    "• Tip: Solve words in fewer attempts for higher score!" ;
+                    "  - Easy/Medium: 2 attempts\n" +
+                    "  - Hard: 3 attempts\n\n" +
+
+                    "• If all attempts are used, you lose 1 life.\n\n" +
+
+                    "• Skip:\n" +
+                    "  - You can skip a word anytime (score penalty applies).\n\n" +
+
+                    "• Hint System:\n" +
+                    "  - You can use up to 2 hints per word\n" +
+                    "  - Hint 1 reveals first letter\n" +
+                    "  - Hint 2 reveals last letter\n\n" +
+
+                    "• Try to guess in fewer attempts for a better score.\n" +
+                    "• Game ends when all lives are lost.";
 
         JOptionPane.showMessageDialog(frame, rules, "How to Play", JOptionPane.INFORMATION_MESSAGE);
         }); 
 
             
-
+        
         // Difficulty level text
         JTextArea level=new JTextArea();
         level.setText("Select Difficulty level");
