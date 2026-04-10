@@ -70,35 +70,35 @@ public class WordJumbleScreen {
         Font font = new Font("Arial", Font.BOLD, 20);
 
         scoreLabel = new JLabel("Score: 0");
-        scoreLabel.setBounds(400, 60, 200, 30);
+        scoreLabel.setBounds(450, 200, 200, 30);
         scoreLabel.setFont(font);
 
         streakLabel = new JLabel("Streak: 0");
-        streakLabel.setBounds(550, 60, 200, 30);
+        streakLabel.setBounds(600, 200, 200, 30);
         streakLabel.setFont(font);
 
         LifeLabel = new JLabel("Lives: 3");
-        LifeLabel.setBounds(700, 60, 200, 30);
+        LifeLabel.setBounds(750, 200, 200, 30);
         LifeLabel.setFont(font);
 
         highScoreLabel = new JLabel("High Score: " + highScore);
-        highScoreLabel.setBounds(850, 60, 250, 30);
+        highScoreLabel.setBounds(900, 200, 250, 30);
         highScoreLabel.setFont(font);
 
         questionLabel = new JLabel("WORD", JLabel.CENTER);
-        questionLabel.setBounds(500, 200, 500, 60);
+        questionLabel.setBounds(500, 290, 500, 60);
         questionLabel.setFont(new Font("Arial", Font.BOLD, 40));
 
         answerField = new JTextField();
-        answerField.setBounds(550, 300, 300, 40);
+        answerField.setBounds(600, 350, 300, 40);
         answerField.setFont(new Font("Arial", Font.PLAIN, 18));
 
         resultLabel = new JLabel("", JLabel.CENTER);
-        resultLabel.setBounds(500, 360, 500, 40);
+        resultLabel.setBounds(500, 400, 500, 40);
         resultLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         attemptsLabel = new JLabel("Attempts left: " + attempts);
-        attemptsLabel.setBounds(700, 120, 200, 30);
+        attemptsLabel.setBounds(680, 250, 200, 30);
         attemptsLabel.setFont(font);
 
         // Submit Button
@@ -111,6 +111,10 @@ public class WordJumbleScreen {
         submitBtn.addActionListener(e -> {
             String userAnswer = answerField.getText().trim().toLowerCase();
 
+            if (userAnswer.isEmpty()) {
+                resultLabel.setText("Enter a word!");
+                return;
+            }
             if (userAnswer.equals(currentWord)) {
                 resultLabel.setText("Correct!");
                 handleCorrectAnswer();
@@ -155,7 +159,7 @@ public class WordJumbleScreen {
             int penalty = getHintPenalty();
 
             if (score < penalty) {
-                resultLabel.setText("Not enough score for hint!");
+                resultLabel.setText("Need at least " + penalty + " points for hint!");
                 return;
             }
 
@@ -175,6 +179,8 @@ public class WordJumbleScreen {
 
             updateUI();
         });
+
+
 
         panel.add(scoreLabel);
         panel.add(streakLabel);
@@ -235,7 +241,7 @@ public class WordJumbleScreen {
 
         do {
             letters = word.toCharArray();
-            for (int i = 0; i < letters.length; i++) {
+            for (int i = 0; i < (letters.length-1); i++) {
                 int j = random.nextInt(letters.length);
                 char temp = letters[i];
                 letters[i] = letters[j];
@@ -252,10 +258,10 @@ public class WordJumbleScreen {
         streak++;
         updateScore();
 
-        if (streak % 3 == 0) {
+        if (streak % 5 == 0) {
             score += 10;
             lives++;
-            resultLabel.setText("Streak Bonus!");
+            resultLabel.setText("Streak Bonus! +10 score & +1 life");
         }
 
         generateWord();
@@ -271,7 +277,7 @@ public class WordJumbleScreen {
             resultLabel.setText("Wrong! Try again");
         } else {
             lives--;
-            resultLabel.setText("Lost 1 life!");
+            resultLabel.setText("Answer: " + currentWord + " | Lost 1 life!");
             generateWord();
         }
 
@@ -343,17 +349,24 @@ public class WordJumbleScreen {
 
     void gameOver() {
 
-        if (difficulty.equals("Easy") && score > highScoreEasy) highScoreEasy = score;
-        else if (difficulty.equals("Medium") && score > highScoreMedium) highScoreMedium = score;
-        else if (difficulty.equals("Hard") && score > highScoreHard) highScoreHard = score;
+        boolean newHigh = false;
+
+        if (difficulty.equals("Easy") && score > highScoreEasy) {
+            highScoreEasy = score;
+            newHigh = true;
+        } else if (difficulty.equals("Medium") && score > highScoreMedium) {
+            highScoreMedium = score;
+            newHigh = true;
+        } else if (difficulty.equals("Hard") && score > highScoreHard) {
+            highScoreHard = score;
+            newHigh = true;
+        }
 
         saveHighScore();
-        highScoreLabel.setText("High Score: " + getHighScore());
-
-        JOptionPane.showMessageDialog(frame, "Game Over!\nScore: " + score);
         
+        
+        new WordJumbleOvenrScreen(score, getHighScore(), difficulty);
         frame.dispose();
-        new WordJumbleGUI();
     }
 
     int getHighScore() {
