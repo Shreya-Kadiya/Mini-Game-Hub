@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 
 public class WordJumbleGUI {
@@ -16,6 +19,8 @@ public class WordJumbleGUI {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         BackgroundPanel panel = new BackgroundPanel("src/Word Jumble.png");
+
+        loadHighScore();
         
 
         //back button
@@ -43,27 +48,14 @@ public class WordJumbleGUI {
        HTP.setBounds(700, 700, 150, 40);
          HTP.addActionListener(e -> {
             String rules = "Word Jumble Rules:\n\n"+
-            
-                    "• You start with 3 lives.\n" +
-                    "• Guess the correct word from jumbled letters.\n\n" +
-                    
-                    "• Attempts per word:\n" +
-                    "  - Easy/Medium: 2 attempts\n" +
-                    "  - Hard: 3 attempts\n\n" +
-
-                    "• If all attempts are used, you lose 1 life.\n\n" +
-
-                    "• Skip:\n" +
-                    "  - You can skip a word anytime (score penalty applies).\n\n" +
-
-                    "• Hint System:\n" +
-                    "  - You can use up to 2 hints per word\n" +
-                    "  - Hint 1 reveals first letter\n" +
-                    "  - Hint 2 reveals last letter\n\n" +
-
-                    "• Try to guess in fewer attempts for a better score.\n" +
-                    "• Game ends when all lives are lost.";
-
+            "HOW TO PLAY\n\n" +
+            "- Unscramble the jumbled word\n" +
+            "- Type answer → click Submit\n" +
+            "- Correct = points\n" +
+            "- Wrong = lose attempt/life\n" +
+            "- Hint & Skip cost points\n" +
+            "- Game ends if lives = 0\n" +
+            "- Play all rounds, score high";
         JOptionPane.showMessageDialog(frame, rules, "How to Play", JOptionPane.INFORMATION_MESSAGE);
         }); 
 
@@ -131,7 +123,7 @@ public class WordJumbleGUI {
         );
         level_H.setBounds(1000, 400, 150, 40); 
         level_H.addActionListener(e -> {    
-            new WordJumbleScreen("Hard2");
+            new WordJumbleScreen("Hard");
            frame.dispose();      
         });       
 
@@ -164,6 +156,21 @@ public class WordJumbleGUI {
     }
 
 
+    void loadHighScore() {
+    try {
+        File file = new File("wordjumble_highscore.txt");
+        if (!file.exists()) return;
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        highScoreEasy = Integer.parseInt(br.readLine());
+        highScoreMedium = Integer.parseInt(br.readLine());
+        highScoreHard = Integer.parseInt(br.readLine());
+        br.close();
+
+    } catch (Exception e) {
+        System.out.println("Error loading high score");
+    }
+}
 
 
 

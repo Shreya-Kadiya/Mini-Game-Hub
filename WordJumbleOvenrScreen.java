@@ -98,6 +98,6 @@ public class WordJumbleOvenrScreen {
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        new WordJumbleOvenrScreen ("Time's Up", 2, 15, "Medium");
+        new WordJumbleOvenrScreen (2, 15, "Medium");
     }
 }

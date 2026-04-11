@@ -15,10 +15,13 @@ public class WordJumbleScreen {
 
     int score = 0;
     int streak = 0;
-    int lives = 3;
+    int lives = 2;
     int attempts;
     int maxAttempts;
     int hintsUsed = 0;
+    int totalRounds = 12;
+    int currentRound = 0;
+    JLabel roundLabel;
 
     static int highScoreEasy = 0;
     static int highScoreMedium = 0;
@@ -27,12 +30,34 @@ public class WordJumbleScreen {
     String currentWord;
     String jumbledWord;
 
+    boolean isGameOver = false;
+
     Random random = new Random();
     ArrayList<String> usedWords = new ArrayList<>();
 
-    String[] easyWords = {"apple", "ball", "cat", "dog", "book"};
-    String[] mediumWords = {"orange", "laptop", "garden", "school", "market"};
-    String[] hardWords = {"computer", "elephant", "developer", "keyboard", "internet"};
+    String[] easyWords = {
+    "apple", "ball", "cat", "dog", "book",
+    "tree", "fish", "milk", "pen", "cup",
+    "sun", "moon", "star", "hat", "shoe",
+    "car", "bus", "road", "map", "key",
+    "bed", "toy", "box", "bag", "fan"
+    };
+
+    String[] mediumWords = {
+    "apple","table","chair","water","bread",
+    "light","plant","clock","paper","money",
+    "phone","glass","shirt","pants","train",
+    "beach","river","stone","sweet","spoon",
+    "brush","smile","dream","happy","clean"
+};
+
+    String[] hardWords = {
+    "people","little","number","system","family",
+    "school","friend","father","mother","animal",
+    "doctor","market","travel","office","police",
+    "public","driver","garden","silver","golden",
+    "secret","simple","random","player","winner"
+};
 
     String fileName = "wordjumble_highscore.txt";
 
@@ -77,7 +102,7 @@ public class WordJumbleScreen {
         streakLabel.setBounds(600, 200, 200, 30);
         streakLabel.setFont(font);
 
-        LifeLabel = new JLabel("Lives: 3");
+        LifeLabel = new JLabel("Lives:"+ lives);
         LifeLabel.setBounds(750, 200, 200, 30);
         LifeLabel.setFont(font);
 
@@ -98,8 +123,13 @@ public class WordJumbleScreen {
         resultLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         attemptsLabel = new JLabel("Attempts left: " + attempts);
-        attemptsLabel.setBounds(680, 250, 200, 30);
+        attemptsLabel.setBounds(790, 250, 200, 30);
         attemptsLabel.setFont(font);
+
+        roundLabel = new JLabel("Round: 1/" + totalRounds);
+        roundLabel.setBounds(590, 250, 200, 30);
+        roundLabel.setFont(font);
+        panel.add(roundLabel);
 
         // Submit Button
         RoundedButton submitBtn = new RoundedButton("Submit",
@@ -140,7 +170,7 @@ public class WordJumbleScreen {
             if (score < penalty) {
             resultLabel.setText("Need at least " + penalty + " points to skip!");
             return;
-    }
+         }
             applySkipPenalty();
             streak = 0;
             generateWord();
@@ -173,11 +203,62 @@ public class WordJumbleScreen {
                 applyHintPenalty();
                 hintsUsed++;
 
-            } else {
-                resultLabel.setText("No more hints!");
-            }
+            } 
 
             updateUI();
+        });
+
+        RoundedButton FinishBtn = new RoundedButton("Finish",
+                new Color(5,72,149),
+                new Color(26,3,85),
+                new Color(48,14,186));
+        FinishBtn.setBounds(1200, 20, 100, 40);
+        FinishBtn.addActionListener(e -> {
+            gameOver();
+        });
+
+        RoundedButton rulesBtn = new RoundedButton("Rules",
+                new Color(5,72,149),
+                new Color(26,3,85),
+                new Color(48,14,186));
+        rulesBtn.setBounds(250, 20, 100, 40);
+        rulesBtn.addActionListener(e -> {
+           
+
+            String message = "SCORE SYSTEM\n\n";
+
+            if (difficulty.equals("Easy")) {
+                message += "Easy Mode:\n" +
+                        "+10 correct\n" +
+                        "-2 hint / skip\n" +
+                        "Attempts: 1\n" +
+                        "Lives: 2";
+            } 
+            else if (difficulty.equals("Medium")) {
+                message += "Medium Mode:\n" +
+                        "+15 (1st try)\n" +
+                        "+10 (2nd try)\n" +
+                        "-3 hint | -4 skip\n" +
+                        "Attempts: 2\n" +
+                        "Lives: 2";
+            } 
+            else {
+                message += "Hard Mode:\n" +
+                        "+20 (1st try)\n" +
+                        "+15 (2nd try)\n" +
+                        "-5 hint | -6 skip\n" +
+                        "Attempts: 2\n" +
+                        "Lives: 2";
+            }
+
+            message += "\n\nBonus:\n+10 every 5 correct";
+
+            JOptionPane.showMessageDialog(
+                frame,
+                message,
+                "Score Info",
+                JOptionPane.INFORMATION_MESSAGE
+            );
         });
 
 
@@ -194,6 +275,8 @@ public class WordJumbleScreen {
         panel.add(skipBtn);
         panel.add(hintBtn);
         panel.add(backBtn);
+        panel.add(FinishBtn);
+        panel.add(rulesBtn);
 
         frame.setContentPane(panel);
         generateWord();
@@ -210,10 +293,18 @@ public class WordJumbleScreen {
         answerField.requestFocusInWindow();
         hintsUsed = 0;
         resetAttempts();
-
+        resultLabel.setForeground(Color.BLACK);
         String[] wordList;
 
         resultLabel.setText("");
+
+        currentRound++;
+        if (currentRound > totalRounds) {
+            gameOver();
+            return;
+        }
+        
+       
 
         if (difficulty.equals("Easy")) wordList = easyWords;
         else if (difficulty.equals("Medium")) wordList = mediumWords;
@@ -241,43 +332,72 @@ public class WordJumbleScreen {
 
         do {
             letters = word.toCharArray();
-            for (int i = 0; i < (letters.length-1); i++) {
-                int j = random.nextInt(letters.length);
-                char temp = letters[i];
-                letters[i] = letters[j];
-                letters[j] = temp;
-            }
-            shuffled = new String(letters);
-        } while (shuffled.equals(word));
+         int swaps;
+
+        if (difficulty.equals("Easy")) swaps = letters.length;          // full shuffle
+        else if (difficulty.equals("Medium")) swaps = letters.length - 2;
+        else swaps = letters.length - 3; // Hard → slightly easier
+
+        for (int i = 0; i < swaps; i++) {
+            int j = random.nextInt(letters.length);
+            char temp = letters[i];
+            letters[i] = letters[j];
+            letters[j] = temp;
+        }
+
+        shuffled = new String(letters);
+
+    } while (shuffled.equals(word));
 
         return shuffled;
     }
 
     void handleCorrectAnswer() {
 
-        streak++;
-        updateScore();
+    streak++;
 
-        if (streak % 5 == 0) {
-            score += 10;
-            lives++;
-            resultLabel.setText("Streak Bonus! +10 score & +1 life");
-        }
+    int used = maxAttempts - attempts + 1;
+    int points = 0;
 
-        generateWord();
-        updateUI();
+    if (difficulty.equals("Easy")) {
+        points = (used == 1) ? 10 : 5;
+    } 
+    else if (difficulty.equals("Medium")) {
+        points = (used == 1) ? 15 : 10;
+    } 
+    else {
+        if (used == 1) points = 20;
+        else if (used == 2) points = 15;
+        else points = 10;
     }
+
+    score += points;
+
+    if (streak % 5 == 0) {
+        score += 10;
+        resultLabel.setText("Streak Bonus! +10");
+    } else {
+        resultLabel.setText("Correct! +" + points);
+    }
+
+    resultLabel.setForeground(Color.GREEN);
+    updateUI();
+    generateWord();
+}
 
     void handleWrongAnswer() {
         streak=0;
 
         attempts--;
-
+        
         if (attempts > 0) {
+            resultLabel.setForeground(Color.RED);
             resultLabel.setText("Wrong! Try again");
-        } else {
+        } 
+        else {
             lives--;
-            resultLabel.setText("Answer: " + currentWord + " | Lost 1 life!");
+            resultLabel.setForeground(Color.RED);
+            resultLabel.setText("Answer: " + currentWord + " | -1 Life");
             generateWord();
         }
 
@@ -290,11 +410,16 @@ public class WordJumbleScreen {
 
         int used = maxAttempts - attempts + 1;
 
-        if (difficulty.equals("Easy")) {
+        if (difficulty.equals("Easy")) 
+        {
             score += (used == 1) ? 10 : 5;
-        } else if (difficulty.equals("Medium")) {
+        } 
+        else if (difficulty.equals("Medium")) 
+        {
             score += (used == 1) ? 15 : 10;
-        } else {
+        }
+        else 
+        {
             if (used == 1) score += 20;
             else if (used == 2) score += 15;
             else score += 10;
@@ -302,29 +427,30 @@ public class WordJumbleScreen {
     }
 
     void resetAttempts() {
-        if (difficulty.equals("Hard")) {
-            attempts = 3;
-            maxAttempts = 3;
-        } else {
-            attempts = 2;
-            maxAttempts = 2;
-        }
+    if (difficulty.equals("Easy")) {
+        attempts = 1;
+        maxAttempts = 1;
+    } 
+    
+    else {
+        attempts = 2;
+        maxAttempts = 2;
     }
+}
 
     void applyHintPenalty() {
-        if (difficulty.equals("Easy")) score -= 2;
-        else if (difficulty.equals("Medium")) score -= 3;
-        else score -= 5;
+    int penalty = getHintPenalty();
+    score -= penalty;
 
-        if (score < 0) score = 0;
-    }
+    if (score < 0) score = 0;
+}
 
 
     int getHintPenalty() {
     if (difficulty.equals("Easy")) return 2;
     else if (difficulty.equals("Medium")) return 3;
     else return 5;
-}
+    }
 
     int getSkipPenalty() {
         if (difficulty.equals("Easy")) return 2;
@@ -344,30 +470,38 @@ public class WordJumbleScreen {
         scoreLabel.setText("Score: " + score);
         streakLabel.setText("Streak: " + streak);
         LifeLabel.setText("Lives: " + lives);
-        attemptsLabel.setText("Attempts left: " + attempts);
+        if (difficulty.equals("Easy")) {
+        attemptsLabel.setText("Only 1 attempt");
+        } 
+        else {
+            attemptsLabel.setText("Attempts left: " + attempts);
+        }
+        roundLabel.setText("Round: " + currentRound + "/" + totalRounds);
     }
 
     void gameOver() {
 
-        boolean newHigh = false;
+    if (isGameOver) return; // prevent multiple calls
+    isGameOver = true;
 
-        if (difficulty.equals("Easy") && score > highScoreEasy) {
-            highScoreEasy = score;
-            newHigh = true;
-        } else if (difficulty.equals("Medium") && score > highScoreMedium) {
-            highScoreMedium = score;
-            newHigh = true;
-        } else if (difficulty.equals("Hard") && score > highScoreHard) {
-            highScoreHard = score;
-            newHigh = true;
-        }
+    boolean newHigh = false;
 
-        saveHighScore();
-        
-        
-        new WordJumbleOvenrScreen(score, getHighScore(), difficulty);
-        frame.dispose();
+    if (difficulty.equals("Easy") && score > highScoreEasy) {
+        highScoreEasy = score;
+        newHigh = true;
+    } else if (difficulty.equals("Medium") && score > highScoreMedium) {
+        highScoreMedium = score;
+        newHigh = true;
+    } else if (difficulty.equals("Hard") && score > highScoreHard) {
+        highScoreHard = score;
+        newHigh = true;
     }
+
+    saveHighScore();
+
+    new WordJumbleOvenrScreen(score, getHighScore(), difficulty);
+    frame.dispose();
+}
 
     int getHighScore() {
         if (difficulty.equals("Easy")) return highScoreEasy;
