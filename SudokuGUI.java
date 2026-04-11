@@ -26,8 +26,8 @@ public class SudokuGUI {
         backButton.addActionListener(e -> {
               new Dashboard(); // Open Dashboard
               frame.dispose(); 
-    });
-   
+        });
+        
 
        
         

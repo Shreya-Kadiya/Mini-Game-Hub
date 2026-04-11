@@ -56,8 +56,8 @@ class RoundedPanel extends JPanel {
 
 class RoundedButton extends JButton {
 
-     boolean hover = false;
-     boolean pressed = false;
+    boolean hover = false;
+    boolean pressed = false;
 
 
     //  Custom colors
@@ -138,7 +138,6 @@ class RoundedButton extends JButton {
         } else {
             g2.setColor(normalColor);
         }
-
         g2.fillRoundRect(0, offset, width, height - offset, 30, 30);
 
         //  Border

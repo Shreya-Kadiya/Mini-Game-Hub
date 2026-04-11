@@ -1,13 +1,35 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+
 
 public class MathChallangeGUI {
+
+    int highScoreEasy = 0;
+    int highScoreMedium = 0;
+    int highScoreHard = 0;
+
     
     public MathChallangeGUI() {
+
+        File file = new File("highscore.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write("0\n0\n0\n"); 
+                bw.close();
+            } catch (IOException e) {
+                System.out.println("Error initializing high score file");
+            }
+        }
+        loadHighScores();
+
+
         JFrame frame = new JFrame("Math challange");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        
         BackgroundPanel panel = new BackgroundPanel("src/MathSolve.png");
         
 
@@ -20,7 +42,7 @@ public class MathChallangeGUI {
        
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              new Dashboard(); // Open Dashboard
+              new Dashboard(); 
               frame.dispose(); 
         });     
     
@@ -40,11 +62,14 @@ public class MathChallangeGUI {
             + "2. You get points for correct answers.\n"
             + "3. Every 3 correct answers gives bonus points.\n"
             + "4. Game ends if time is over.\n"
-            + "5. Game ends if you give 5 wrong answers.\n"
-            + "6. Try to beat the high score!";
+            + "5. You have 5 life ,if you give wrong answer you loose 1 life"
+            + "6. Game ends if 0 lives left\n"
+            + "7. Try to beat the high score!";
 
         JOptionPane.showMessageDialog(frame, rules, "How to Play", JOptionPane.INFORMATION_MESSAGE);
         }); 
+
+            
 
         // Difficulty level text
         JTextArea level=new JTextArea();
@@ -56,9 +81,6 @@ public class MathChallangeGUI {
         level.setEditable(false);
         level.setFocusable(false);
 
-        int[] highScores = {0,0,0}; // Placeholder for high scores of each difficulty
-    
-
         RoundedButton level_E = new RoundedButton("Easy",
                     new Color(5, 72, 149), // normal
                     new Color(26, 3, 85),  // hover
@@ -69,9 +91,11 @@ public class MathChallangeGUI {
             new MathGameScreen("Easy");
             frame.dispose();
         });
+
+    
          //High score for easy level
-        JLabel HSE = new JLabel("High Score" + highScores[0]);
-        HSE.setText("High Score: "+ highScores[0]);
+        JLabel HSE = new JLabel("High Score" + highScoreEasy);
+        HSE.setText("High Score: "+ highScoreEasy);
         HSE.setBounds(415, 400, 500, 50);
         HSE.setFont(new Font("Arial", Font.BOLD, 20));
         HSE.setForeground(new Color(1,27,59));
@@ -86,10 +110,14 @@ public class MathChallangeGUI {
             new Color(48, 14, 186) // pressed   
         );
         level_M.setBounds(700, 350, 150, 40);
+        level_M.addActionListener(e -> {
+            new MathGameScreen("Medium");
+            frame.dispose();
+        });
 
         //High score for medium level
-        JLabel HSM = new JLabel("High Score" + highScores[1]);
-        HSM.setText("High Score: "+ highScores[1]);
+        JLabel HSM = new JLabel("High Score" + highScoreMedium);
+        HSM.setText("High Score: "+ highScoreMedium);
         HSM.setBounds(715, 400, 500, 50);
         HSM.setFont(new Font("Arial", Font.BOLD, 20));
         HSM.setForeground(new Color(1,27,59));
@@ -103,11 +131,16 @@ public class MathChallangeGUI {
             new Color(26, 3, 85),  // hover
             new Color(48, 14, 186) // pressed   
         );
-        level_H.setBounds(1000, 350, 150, 40);        
+        level_H.setBounds(1000, 350, 150, 40); 
+        level_H.addActionListener(e -> {
+            new MathGameScreen("Hard");
+            frame.dispose();
+        });       
 
+        
         //High score for hard level
-        JLabel HSH = new JLabel("High Score " + highScores[2]);
-        HSH.setText("High Score: "+ highScores[2]);
+        JLabel HSH = new JLabel("High Score " + highScoreHard);
+        HSH.setText("High Score: "+ highScoreHard);
         HSH.setBounds(1015, 400, 500, 50);
         HSH.setFont(new Font("Arial", Font.BOLD, 20));
         HSH.setForeground(new Color(1,27,59));
@@ -132,7 +165,21 @@ public class MathChallangeGUI {
        
     }
 
-    public static void main(String[] args) {
+
+    private void loadHighScores() {
+    try {
+        BufferedReader br = new BufferedReader(new FileReader("highscore.txt"));
+        highScoreEasy = Integer.parseInt(br.readLine());
+        highScoreMedium = Integer.parseInt(br.readLine());
+        highScoreHard = Integer.parseInt(br.readLine());
+        br.close();
+    } catch (Exception e) {
+        System.out.println("Error loading high score");
+    }
+}
+
+
+public static void main(String[] args) {
         new MathChallangeGUI();
 }
 }
