@@ -1,145 +1,190 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+
 
 public class SudokuGUI {
 
+    int highScoreEasy = 0;
+    int highScoreMedium = 0;
+    int highScoreHard = 0;
 
+    
     public SudokuGUI() {
 
-
-        
-        JFrame frame = new JFrame("Sudoku");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        BackgroundPanel panel = new BackgroundPanel("src/Sudoku.png");
-        frame.setContentPane(panel);
-
-        //back button
-        RoundedButton backButton = new RoundedButton("Back",
-                    new Color(5, 72, 149), // normal
-                    new Color(26, 3, 85),  // hover
-                    new Color(48, 14, 186) // pressed   
-                );
-        backButton.setBounds(20, 20, 100, 40);
-        backButton.addActionListener(e -> {
-              new Dashboard(); // Open Dashboard
-              frame.dispose(); 
-        });
-        
-
-       
-        
-        JTextArea rulesArea = new JTextArea(
-            "                    Rules:\n\n" +
-            "• Fill the 4x4 grid with numbers 1 to 4\n" +
-            "• Each number must appear only once \n in every row\n" +
-            "• Each number must appear only once \n in every column\n" +
-            "• Each 2x2 box must contain numbers \n 1 to 4 without repetition\n" +
-            "• Do not change the pre-filled numbers\n" +
-            "• Complete the grid correctly to win\n\n" +
-            "       Use logic, not guessing!"
-        );
-
-        rulesArea.setEditable(false);
-        rulesArea.setOpaque(false);
-        rulesArea.setFont(new Font("Arial BOLD", Font.PLAIN, 20));
-        rulesArea.setForeground(new Color(128,11,63));
-        rulesArea.setBounds(1050, 200, 750, 800);
-       
-        
-
-        // Add your gridPanel on top (higher layer)
-        JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(4, 4));
-        gridPanel.setBounds(500, 170, 500, 500);
-        gridPanel.setOpaque(true);
-        gridPanel.setBackground(new Color(250, 250, 250));
-        gridPanel.setBorder(BorderFactory.createLineBorder(new Color(18, 4, 85), 4));
-       
-        JTextField[][] cells = new JTextField[4][4];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                final int row = i;
-                final int col = j;
-                JTextField cell = new JTextField();
-                cell.setHorizontalAlignment(JTextField.CENTER);
-                cell.setOpaque(true);
-                cell.setBackground(new Color(251,236,253));//color of cell background
-                cell.setFont(new Font("Arial", Font.BOLD, 50));
-                cell.setBorder(BorderFactory.createLineBorder(new Color(36,24,93), 2));//color of cell border
-                if ((i / 2 + j / 2) % 2 == 0) {
-                    cell.setBackground(new Color(246,207,179)); // light variation
-                } 
-                else {
-                    cell.setBackground(new Color(247,181,134)); // dark variation
-                }
-
-
-                cell.addFocusListener(new java.awt.event.FocusAdapter() {
-                    public void focusGained(java.awt.event.FocusEvent e) {
-                        cell.setBackground(new Color(251,236,225)); // highlight
-                    }
-
-                    public void focusLost(java.awt.event.FocusEvent e) {
-                        if ((row/ 2 + col/ 2) % 2 == 0) {
-                            cell.setBackground(new Color(246,207,179));
-                        } else {
-                            cell.setBackground(new Color(247,181,134));
-                        }
-                    }
-                }
-            );
-                
-                cells[i][j] = cell;
-                gridPanel.add(cell);
+        File file = new File("highscore.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write("0\n0\n0\n"); 
+                bw.close();
+            } catch (IOException e) {
+                System.out.println("Error initializing high score file");
             }
         }
+        loadHighScores();
 
 
+        JFrame frame = new JFrame("Math challange");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        BackgroundPanel panel = new BackgroundPanel("src/Sudoku.png");
+        
 
-        //check button
-        RoundedButton checkButton = new RoundedButton("CHECK",
-                   new Color(5, 72, 149), // normal
-                    new Color(26, 3, 85),  // hover
-                    new Color(48, 14, 186) // pressed 
-        );
-        checkButton.setBounds(850, 700, 150, 40);
-        checkButton.addActionListener(e -> {
-            //check logic
-         });
-         //reset button
-        RoundedButton resetButton = new RoundedButton("RESET",
+        //back button
+       RoundedButton backButton = new RoundedButton("Back",
                     new Color(5, 72, 149), // normal
                     new Color(26, 3, 85),  // hover
                     new Color(48, 14, 186) // pressed   
                 );
-        resetButton.setBounds(500, 700, 150, 40);
-         resetButton.addActionListener(e -> {
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cells[i][j].setText("");
-                }
-            }
-            });
-
-
-
-      
-         frame.add(backButton);
-        frame.add(checkButton);
-        frame.add(resetButton);
-        frame.add(rulesArea);
-        frame.add(gridPanel);
-
-        frame.setContentPane(panel);
-        frame.setVisible(true);
-
-
-    }
+       
+       backButton.setBounds(20, 20, 100, 40);
+         backButton.addActionListener(e -> {
+              new Dashboard(); 
+              frame.dispose(); 
+        });     
     
 
-    public static void main(String[] args) {
-        new SudokuGUI();
+            
+       //How to play button
+       RoundedButton HTP = new RoundedButton("How to play",
+                    new Color(5, 72, 149), // normal
+                    new Color(26, 3, 85),  // hover
+                    new Color(48, 14, 186) // pressed   
+                );
+       
+       HTP.setBounds(700, 600, 150, 40);
+         HTP.addActionListener(e -> {
+        String rules = """
+            HOW TO PLAY (4x4 Sudoku)
+
+            • Fill numbers 1–4 in the grid
+            • No repetition in any row, column, or 2×2 box
+            • Tap a cell to enter or change a number
+            • Fixed cells cannot be changed
+            • You have 3 mistakes only
+            • Use Hint to reveal a correct cell (limited)
+            • Use Check to highlight incorrect rows/columns/boxes
+            • Use Reset to clear your inputs
+            • Complete correctly to win
+            """;;
+
+        JOptionPane.showMessageDialog(frame, rules, "How to Play", JOptionPane.INFORMATION_MESSAGE);
+        }); 
+
+            
+
+        // Difficulty level text
+        JTextArea level=new JTextArea();
+        level.setText("Select Difficulty level");
+        level.setBounds(600, 250, 500, 50);
+        level.setFont(new Font("Arial", Font.BOLD, 35));
+        level.setForeground(new Color(1,27,59));
+        level.setOpaque(false);
+        level.setEditable(false);
+        level.setFocusable(false);
+
+        RoundedButton level_E = new RoundedButton("Easy",
+                    new Color(5, 72, 149), // normal
+                    new Color(26, 3, 85),  // hover
+                    new Color(48, 14, 186) // pressed   
+        );
+        level_E.setBounds(400, 350, 150, 40);
+        level_E.addActionListener(e -> {
+            new SudokuScreen("Easy");
+            frame.dispose();
+        });
+
+    
+         //High score for easy level
+        JLabel HSE = new JLabel("High Score" + highScoreEasy);
+        HSE.setText("High Score: "+ highScoreEasy);
+        HSE.setBounds(415, 400, 500, 50);
+        HSE.setFont(new Font("Arial", Font.BOLD, 20));
+        HSE.setForeground(new Color(1,27,59));
+        HSE.setOpaque(false);
+        HSE.setFocusable(false);
+
+        
+        // Medium level button
+        RoundedButton level_M = new RoundedButton("Medium",
+            new Color(5, 72, 149), // normal
+            new Color(26, 3, 85),  // hover
+            new Color(48, 14, 186) // pressed   
+        );
+        level_M.setBounds(700, 350, 150, 40);
+        level_M.addActionListener(e -> {
+             new SudokuScreen("Medium");
+            frame.dispose();
+        });
+
+        //High score for medium level
+        JLabel HSM = new JLabel("High Score" + highScoreMedium);
+        HSM.setText("High Score: "+ highScoreMedium);
+        HSM.setBounds(715, 400, 500, 50);
+        HSM.setFont(new Font("Arial", Font.BOLD, 20));
+        HSM.setForeground(new Color(1,27,59));
+        HSM.setOpaque(false);
+        HSM.setFocusable(false);
+
+
+        // Hard level button
+        RoundedButton level_H = new RoundedButton("Hard",
+            new Color(5, 72, 149), // normal
+            new Color(26, 3, 85),  // hover
+            new Color(48, 14, 186) // pressed   
+        );
+        level_H.setBounds(1000, 350, 150, 40); 
+        level_H.addActionListener(e -> {
+             new SudokuScreen("Hard");
+            frame.dispose();
+        });       
+
+        
+        //High score for hard level
+        JLabel HSH = new JLabel("High Score " + highScoreHard);
+        HSH.setText("High Score: "+ highScoreHard);
+        HSH.setBounds(1015, 400, 500, 50);
+        HSH.setFont(new Font("Arial", Font.BOLD, 20));
+        HSH.setForeground(new Color(1,27,59));
+        HSH.setOpaque(false);
+        HSH.setFocusable(false);
+
+
+        
+    
+        frame.setContentPane(panel);
+        panel.setLayout(null);
+        panel.add(backButton);
+        panel.add(HTP);
+        panel.add(level);
+        panel.add(level_E);
+        panel.add(HSE);
+        panel.add(level_M);
+        panel.add(HSM);
+        panel.add(level_H);
+        panel.add(HSH);
+        frame.setVisible(true);
+       
     }
+
+
+    private void loadHighScores() {
+    try {
+        BufferedReader br = new BufferedReader(new FileReader("Sudoku_highscore.txt"));
+        highScoreEasy = Integer.parseInt(br.readLine());
+        highScoreMedium = Integer.parseInt(br.readLine());
+        highScoreHard = Integer.parseInt(br.readLine());
+        br.close();
+    } catch (Exception e) {
+        System.out.println("Error loading high score");
+    }
+}
+
+
+public static void main(String[] args) {
+        new SudokuGUI();
+}
 }
