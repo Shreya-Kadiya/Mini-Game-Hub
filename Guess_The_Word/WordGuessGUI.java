@@ -33,7 +33,7 @@ public class WordGuessGUI {
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
               new Dashboard(); 
-              frame.dispose(); 
+              frame.dispose();
         });     
     
 

@@ -17,6 +17,8 @@ public class WordGuessScreen {
 
     String word;
     char[] display;
+    java.util.List<String> wordList;
+    
 
     java.util.Set<Character> guessedLetters = new java.util.HashSet<>();
 
@@ -25,9 +27,28 @@ public class WordGuessScreen {
     JTextField inputField;
     RoundedButton submitButton, revealButton;
 
-    String[] easyWords = {"CAT", "DOG", "BALL", "TREE", "BOOK"};
-    String[] mediumWords = {"APPLE", "ORANGE", "CHAIR", "TABLE", "PHONE"};
-    String[] hardWords = {"COMPUTER", "KEYBOARD", "LANGUAGE", "SOFTWARE", "ELEPHANT"};
+    String[] easyWords = {
+    "CAT", "DOG", "SUN", "BAT", "CAR",
+    "PEN", "BOX", "HAT", "MAP", "CUP",
+    "BED", "TOY", "RUN", "RED", "KEY",
+    "FAN", "BAG", "ICE", "MILK", "TREE",
+    "BOOK", "BALL", "STAR", "FISH", "WIND"
+    };
+    String[] mediumWords = {
+    "APPLE", "ORANGE", "CHAIR", "TABLE", "PHONE",
+    "BOTTLE", "WINDOW", "MARKET", "POCKET", "GARDEN",
+    "BUTTON", "SCREEN", "PLAYER", "FLOWER", "BRIDGE",
+    "CANDLE", "FOLDER", "PENCIL", "LAPTOP", "CAMERA",
+    "BANANA", "SCHOOL", "TICKET", "HANDLE", "ENGINE"
+    };    
+    
+    String[] hardWords = {
+    "COMPUTER", "KEYBOARD", "LANGUAGE", "SOFTWARE", "ELEPHANT",
+    "NOTEBOOK", "DATABASE", "PRINTER", "MONITOR", "NETWORK",
+    "SECURITY", "HOSPITAL", "AIRPLANE", "BUILDING", "TEACHING",
+    "PROGRAM", "INTERNET", "ELETRONIC", "MECHANIC", "EDUCATOR",
+    "SCIENTIST", "DESIGNER", "ENGINEER", "PLATFORM", "ANALYSIS"
+    };
 
 
 
@@ -46,6 +67,8 @@ public class WordGuessScreen {
         } else {
             maxAttempts = 3; // Hard
         }
+
+        
         
         // Frame setup
         frame = new JFrame("Word Guess - " + difficulty);
@@ -160,20 +183,25 @@ public class WordGuessScreen {
 
 // Method to get a random word based on difficulty
     String getRandomWord() {
-    String[] selectedList;
 
+    if (wordList == null || wordList.isEmpty()) {
 
-    if (difficulty.equals("Easy")) {
-        selectedList = easyWords;
-    } else if (difficulty.equals("Medium")) {
-        selectedList = mediumWords;
-    } else {
-        selectedList = hardWords;
+        String[] selectedList;
+
+        if (difficulty.equals("Easy")) {
+            selectedList = easyWords;
+        } else if (difficulty.equals("Medium")) {
+            selectedList = mediumWords;
+        } else {
+            selectedList = hardWords;
+        }
+
+        wordList = new java.util.ArrayList<>(java.util.Arrays.asList(selectedList));
+        java.util.Collections.shuffle(wordList); // shuffle once
     }
 
-    int index = (int)(Math.random() * selectedList.length);
-    return selectedList[index];
-    }
+    return wordList.remove(0); // take and remove → no repeat
+}
 
 
 // Method to get the current display word with spaces
@@ -190,6 +218,7 @@ public class WordGuessScreen {
     void handleGuess() {
 
         String input = inputField.getText().toUpperCase();
+        inputField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         // Clear after reading
         inputField.setText("");
@@ -369,7 +398,7 @@ void endRound(boolean isWin) {
 
 
 void nextRound() {
-
+    inputField.setEnabled(true);
     round++;
     resultLabel.setText("");
 
@@ -443,36 +472,21 @@ void applyMasking() {
 
 void showFinalResult() {
 
-    String result;
-    
-
-     boolean isNewHigh = totalScore > highScore;
+    boolean isNewHigh = totalScore > highScore;
 
     if (isNewHigh) {
         highScore = totalScore;
-        highScoreLabel.setText("High Score: " + highScore);
+    }
 
+    saveHighScore();
+    highScoreLabel.setText("High Score: " + highScore);
+
+    if (isNewHigh) {
         resultLabel.setText("🔥 New High Score!");
         resultLabel.setForeground(Color.ORANGE);
     }
 
-
-    saveHighScore();
-
-
-    if (totalScore >= 160) {
-        result = "🏆 Excellent";
-    } else if (totalScore >= 120) {
-        result = "👍 Good";
-    } else if (totalScore >= 80) {
-        result = "🙂 Average";
-    } else {
-        result = "❌ Poor";
-    }
-
-   
-
-   new WordGuessOvenrScreen(totalScore, highScore, difficulty);
+    new WordGuessOverScreen(totalScore, highScore, difficulty);
 
     frame.dispose(); // close game
 }

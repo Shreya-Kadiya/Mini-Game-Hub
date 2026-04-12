@@ -484,17 +484,12 @@ public class WordJumbleScreen {
     if (isGameOver) return; // prevent multiple calls
     isGameOver = true;
 
-    boolean newHigh = false;
-
     if (difficulty.equals("Easy") && score > highScoreEasy) {
         highScoreEasy = score;
-        newHigh = true;
     } else if (difficulty.equals("Medium") && score > highScoreMedium) {
         highScoreMedium = score;
-        newHigh = true;
     } else if (difficulty.equals("Hard") && score > highScoreHard) {
         highScoreHard = score;
-        newHigh = true;
     }
 
     saveHighScore();

@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class WordGuessOvenrScreen {
+public class WordGuessOverScreen {
 
-    public WordGuessOvenrScreen (int score, int highScore, String difficulty) {
+    public WordGuessOverScreen (int score, int highScore, String difficulty) {
 
         JFrame frame = new JFrame("Game Over");
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -93,6 +93,6 @@ public class WordGuessOvenrScreen {
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        new WordGuessOvenrScreen (2, 15, "Medium");
+        new WordGuessOverScreen (2, 15, "Medium");
     }
 }
