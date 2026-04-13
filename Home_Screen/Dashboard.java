@@ -53,7 +53,7 @@ class RoundedPanel extends JPanel {
 }
 
 
-
+// Custom Button
 class RoundedButton extends JButton {
 
     boolean hover = false;
@@ -209,7 +209,7 @@ public class Dashboard {
                     case 0: new SudokuGUI(); break;
                     case 1: new WordJumbleGUI(); break;
                     case 2: new MathChallangeGUI(); break;
-                    case 3: new WordDecodeGUI(); break;
+                    case 3: new WordGuessGUI(); break;
                 }
                 frame.dispose();
             });

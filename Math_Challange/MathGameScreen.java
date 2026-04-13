@@ -257,31 +257,16 @@ public class MathGameScreen {
     private void endGame(String reason) {
         if (gameTimer != null) gameTimer.stop();
 
-        boolean newHigh = false;
-
         if (difficulty.equals("Easy") && score > highScoreEasy) {
             highScoreEasy = score;
-            newHigh = true;
         } else if (difficulty.equals("Medium") && score > highScoreMedium) {
             highScoreMedium = score;
-            newHigh = true;
         } else if (difficulty.equals("Hard") && score > highScoreHard) {
             highScoreHard = score;
-            newHigh = true;
         }
 
         saveHighScores();
 
-        String message =  reason +
-                "\nGame Over \nScore: " + score +
-                "\nHigh Score: " + getHighScore();
-
-        if (newHigh)
-            { 
-                message +=  "\n<h1> New High Score!<h1>";
-            }
-
-        
         new MathGameOver(reason, score, getHighScore(), difficulty);
         frame.dispose();
     }
