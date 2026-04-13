@@ -12,7 +12,7 @@ public class SudokuGUI {
     
     public SudokuGUI() {
 
-        File file = new File("highscore.txt");
+        File file = new File(System.getProperty("user.dir"), "Sudoku/Sudoku_highscore.txt");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -60,15 +60,14 @@ public class SudokuGUI {
         String rules = """
             HOW TO PLAY (4x4 Sudoku)
 
-            • Fill numbers 1–4 in the grid
-            • No repetition in any row, column, or 2×2 box
-            • Tap a cell to enter or change a number
-            • Fixed cells cannot be changed
-            • You have 3 mistakes only
-            • Use Hint to reveal a correct cell (limited)
-            • Use Check to highlight incorrect rows/columns/boxes
-            • Use Reset to clear your inputs
-            • Complete correctly to win
+            • Fill the 4×4 grid so each row, column, and 2×2 box contains numbers 1 to 4 without repetition.
+            • Pre-filled numbers cannot be changed.
+            • Enter only digits 1–4 in empty cells.
+            • Use CHECK to verify your current entries. Wrong cells will be highlighted.
+            • You get 3 chances — after 3 mistakes, the game ends.
+            • Use HINT (max 3) to reveal a correct cell.
+            • Use SOLVE to auto-complete the puzzle (but it affects your score).
+            • Complete the puzzle correctly to finish the game and get your score.
             """;;
 
         JOptionPane.showMessageDialog(frame, rules, "How to Play", JOptionPane.INFORMATION_MESSAGE);
@@ -173,7 +172,8 @@ public class SudokuGUI {
 
     private void loadHighScores() {
     try {
-        BufferedReader br = new BufferedReader(new FileReader("Sudoku_highscore.txt"));
+        File file = new File(System.getProperty("user.dir"), "Sudoku/Sudoku_highscore.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
         highScoreEasy = Integer.parseInt(br.readLine());
         highScoreMedium = Integer.parseInt(br.readLine());
         highScoreHard = Integer.parseInt(br.readLine());
