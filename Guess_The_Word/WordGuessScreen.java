@@ -496,7 +496,7 @@ void saveHighScore() {
     try {
         int easy = 0, medium = 0, hard = 0;
 
-        java.io.File file = new java.io.File("GTW_highscore.txt");
+        java.io.File file = new java.io.File("Guess_The_Word/GTW_highscore.txt");
 
         // ✅ Read old scores
         if (file.exists()) {
@@ -535,7 +535,7 @@ void saveHighScore() {
 
 void loadHighScore() {
     try {
-        java.io.File file = new java.io.File("GTW_highscore.txt");
+        java.io.File file = new java.io.File("Guess_The_Word/GTW_highscore.txt");
 
         if (!file.exists()) return;
 

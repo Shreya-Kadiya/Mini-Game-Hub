@@ -506,7 +506,7 @@ public class WordJumbleScreen {
 
     void loadHighScore() {
         try {
-            File file = new File(fileName);
+            File file = new File("Word_Jumble/wordjumble_highscore.txt");
             if (!file.exists()) return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -521,7 +521,7 @@ public class WordJumbleScreen {
 
     void saveHighScore() {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("Word_Jumble/wordjumble_highscore.txt"));
             bw.write(highScoreEasy + "\n");
             bw.write(highScoreMedium + "\n");
             bw.write(highScoreHard + "\n");
