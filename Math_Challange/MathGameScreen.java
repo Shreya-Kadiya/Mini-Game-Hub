@@ -302,7 +302,7 @@ public class MathGameScreen {
 
     private void loadHighScores() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("highscore.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("Math_Challange/highscore.txt"));
             highScoreEasy = Integer.parseInt(br.readLine());
             highScoreMedium = Integer.parseInt(br.readLine());
             highScoreHard = Integer.parseInt(br.readLine());
@@ -314,7 +314,7 @@ public class MathGameScreen {
 
     private void saveHighScores() {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("highscore.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("Math_Challange/highscore.txt"));
             bw.write(highScoreEasy + "\n");
             bw.write(highScoreMedium + "\n");
             bw.write(highScoreHard + "\n");

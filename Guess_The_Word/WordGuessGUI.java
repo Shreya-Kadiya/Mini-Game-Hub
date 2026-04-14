@@ -159,7 +159,7 @@ public class WordGuessGUI {
 
     void loadHighScore() {
     try {
-        File file = new File("GTW_highscore.txt");
+        File file = new File("Guess_The_Word/GTW_highscore.txt");
         if (!file.exists()) return;
 
         BufferedReader br = new BufferedReader(new FileReader(file));

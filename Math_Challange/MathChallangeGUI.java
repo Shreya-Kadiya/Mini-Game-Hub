@@ -12,17 +12,6 @@ public class MathChallangeGUI {
     
     public MathChallangeGUI() {
 
-        File file = new File("highscore.txt");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                bw.write("0\n0\n0\n"); 
-                bw.close();
-            } catch (IOException e) {
-                System.out.println("Error initializing high score file");
-            }
-        }
         loadHighScores();
 
 
@@ -168,7 +157,7 @@ public class MathChallangeGUI {
 
     private void loadHighScores() {
     try {
-        BufferedReader br = new BufferedReader(new FileReader("highscore.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("Math_Challange/highscore.txt"));
         highScoreEasy = Integer.parseInt(br.readLine());
         highScoreMedium = Integer.parseInt(br.readLine());
         highScoreHard = Integer.parseInt(br.readLine());

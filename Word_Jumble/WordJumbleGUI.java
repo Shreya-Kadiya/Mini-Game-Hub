@@ -14,7 +14,7 @@ public class WordJumbleGUI {
     
     public WordJumbleGUI() {
 
-        JFrame frame = new JFrame("Math challange");
+        JFrame frame = new JFrame("Word Jumble");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
@@ -158,7 +158,7 @@ public class WordJumbleGUI {
 
     void loadHighScore() {
     try {
-        File file = new File("wordjumble_highscore.txt");
+        File file = new File("Word_Jumble/wordjumble_highscore.txt");
         if (!file.exists()) return;
 
         BufferedReader br = new BufferedReader(new FileReader(file));
