@@ -171,7 +171,7 @@
                 startTimer();
             }
 
-            // ================== CORE GAME ==================
+            
 
             void generateSudoku(String difficulty) {
                 generateBaseSolution();
@@ -282,7 +282,7 @@
                 }
             }
 
-            // ================== YOUR CHECK (UNCHANGED) ==================
+            //CHECK 
 
             void handleCheck() {
 
@@ -466,8 +466,7 @@
             endGame("Puzzle Solved using SOLVE");
         }
 
-            // ================== FINAL SCORE + END ==================
-
+            // FINAL SCORE + END
             int calculateFinalScore() {
 
                 int score = 100;
@@ -514,7 +513,7 @@
                     highScoreHard;
             }
 
-            // ================== TIMER ==================
+            //TIMER
 
             void startTimer() {
                 gameTimer = new javax.swing.Timer(1000, e -> {
@@ -524,7 +523,7 @@
                 gameTimer.start();
             }
 
-            // ================== HIGH SCORE ==================
+            // HIGH SCORE 
 
             void saveHighScore() {
                 try {
@@ -560,7 +559,7 @@
                 }
             }
 
-            // ================== UI HELPERS ==================
+            //UI helpers
 
             void highlightCells(java.util.List<int[]> pos, Color c) {
                 for (int[] p : pos)
@@ -577,7 +576,7 @@
                                 cells[i][j].setBackground(new Color(247,181,134));
             }
 
-            // ================== MAIN ==================
+            
 
             public static void main(String[] args) {
                 new SudokuScreen("Easy");
