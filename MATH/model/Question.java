@@ -2,7 +2,6 @@ package MATH.model;
 
 /*
  * OOP: ENCAPSULATION
- * WHY:
  * - Represents one question as object
  */
 

@@ -9,7 +9,7 @@ public class MathGameOver {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        BackgroundPanel panel = new BackgroundPanel("src/MathSolve.png");
+        BackgroundPanel panel = new BackgroundPanel("images/MathSolve.png");
 
         // Reason
         JLabel reasonLabel = new JLabel(reason);

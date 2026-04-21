@@ -17,8 +17,8 @@ public class HardGenerator implements QuestionGenerator {
         Random rand = new Random();
 
         int a = rand.nextInt(20) + 1;
-        int b = rand.nextInt(10) + 1;
-        int c = rand.nextInt(8) + 1;
+        int b = rand.nextInt(12) + 1;
+        int c = rand.nextInt(7) + 1;
 
         answer = (a + b) * c;
 

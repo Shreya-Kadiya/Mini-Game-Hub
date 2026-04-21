@@ -2,9 +2,8 @@ package MATH.core;
 
 import MATH.model.GameState;
 
-/*
- * OOP: INHERITANCE + ABSTRACTION
- */
+//  OOP: INHERITANCE + ABSTRACTION
+ 
 
 public abstract class BaseGame {
     protected GameState state;

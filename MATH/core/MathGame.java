@@ -7,9 +7,9 @@ import MATH.model.GameState;
 /*
  * OOP CONCEPTS USED:
  * -------------------
- * ✔ Composition → Game HAS-A state, generator, service
- * ✔ Polymorphism → generator changes by difficulty
- * ✔ Encapsulation → state hidden inside class
+ *  Composition → Game HAS-A state, generator, service
+ *  Polymorphism → generator changes by difficulty
+ *  Encapsulation → state hidden inside class
  */
 
 public class MathGame {

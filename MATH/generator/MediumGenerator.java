@@ -16,7 +16,7 @@ public class MediumGenerator implements QuestionGenerator {
 
         Random rand = new Random();
 
-        int a = rand.nextInt(10) + 1;
+        int a = rand.nextInt(15) + 1;
         int b = rand.nextInt(15) + 1;
         int c = rand.nextInt(10) + 1;
 
@@ -37,7 +37,7 @@ public class MediumGenerator implements QuestionGenerator {
     }
 
     private char randomOp() {
-        char[] ops = {'+', '-', '*'};
+        char[] ops = {'+', '-', };
         return ops[new Random().nextInt(3)];
     }
 

@@ -4,7 +4,7 @@ import java.util.Random;
 
 /*
  * OOP CONCEPT: POLYMORPHISM + ENCAPSULATION
- * -----------------------------------------
+ 
  * Easy-level logic is isolated here.
  * Stores internal state (question + answer).
  */

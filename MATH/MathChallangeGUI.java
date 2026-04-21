@@ -1,16 +1,18 @@
 package MATH;
+
 import java.awt.*;
 import javax.swing.*;
 import MATH.service.FileHighScoreService;
 import MATH.util.BackgroundPanel;
 import MATH.util.RoundedButton;
-import Home_Screen.Dashboard;
+
+
 
 public class MathChallangeGUI {
 
     public MathChallangeGUI() {
 
-        // ================= SERVICE (OOP) =================
+        // ================ (OOP) =================
         FileHighScoreService hs = new FileHighScoreService();
 
         int highScoreEasy = hs.getHighScore("Easy");
@@ -22,7 +24,7 @@ public class MathChallangeGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        // ================= BACKGROUND (FIXED PATH) =================
+        // ================= BACKGROUND  =================
         BackgroundPanel panel= new BackgroundPanel("images/MathSolve.png");
         panel.setLayout(null);
 
@@ -37,7 +39,7 @@ public class MathChallangeGUI {
         backButton.setBounds(20, 20, 100, 40);
 
         backButton.addActionListener(e -> {
-            new Dashboard();
+            // new Dashboard();
             frame.dispose();
         });
 
@@ -58,7 +60,7 @@ public class MathChallangeGUI {
                   + "2. You get points for correct answers.\n"
                   + "3. Every 3 correct answers gives bonus points.\n"
                   + "4. Game ends if time is over.\n"
-                  + "5. You have 5 lives, wrong answer = -1 life\n"
+                  + "5. You have  lives, wrong answer = -1 life\n"
                   + "6. Game ends if 0 lives left\n"
                   + "7. Try to beat the high score!";
 

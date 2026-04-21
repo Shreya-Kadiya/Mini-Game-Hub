@@ -18,7 +18,7 @@ public class MathGameScreen {
 
     JFrame frame;
     BackgroundPanel panel;
-
+    boolean isGameOver = false;
     String difficulty;
 
     // ================= OOP: POLYMORPHISM =================
@@ -41,6 +41,7 @@ public class MathGameScreen {
     int highScoreEasy = 0;
     int highScoreMedium = 0;
     int highScoreHard = 0;
+    int life ;
 
     public MathGameScreen(String difficulty) {
 
@@ -86,7 +87,14 @@ public class MathGameScreen {
         streakLabel.setBounds(650, 60, 200, 30);
         streakLabel.setFont(font);
 
-        wrongLabel = new JLabel("Life: 5");
+        if(difficulty.equals("Easy")) {
+            life = 2;
+        }
+        else {
+            life =4;
+        }
+
+        wrongLabel = new JLabel("Life: " + life);
         wrongLabel.setBounds(800, 60, 200, 30);
         wrongLabel.setFont(font);
 
@@ -126,6 +134,8 @@ public class MathGameScreen {
         resultLabel.setBounds(600, 500, 400, 40);
         resultLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
+        
+
         // ================= ADD =================
         panel.add(backBtn);
         panel.add(scoreLabel);
@@ -148,7 +158,7 @@ public class MathGameScreen {
     }
 
     // =========================================================
-    // OOP FACTORY METHOD (IMPORTANT)
+    // OOP FACTORY METHOD FOR GENERATOR CREATION
     // =========================================================
     private QuestionGenerator createGenerator(String difficulty) {
 
@@ -158,7 +168,7 @@ public class MathGameScreen {
     }
 
     // =========================================================
-    // FIXED GENERATION LOGIC (YOUR ERROR FIXED HERE)
+    // FIXED GENERATION LOGIC 
     // =========================================================
     private void generateQuestion() {
 
@@ -208,7 +218,7 @@ public class MathGameScreen {
             resultLabel.setForeground(Color.GREEN);
 
         } else {
-            wrong--;
+            wrong--;   //  Odecrement wrong on actual wrong answer
             streak = 0;
 
             resultLabel.setText("Wrong! Ans: " + correctAnswer);
@@ -221,15 +231,21 @@ public class MathGameScreen {
 
         answerField.setText("");
 
+        //  safe game end check
         if (wrong <= 0) {
-            endGame("0 Lives Left");
+            endGame("No Lives Left");
             return;
         }
 
-        new Timer(400, e -> generateQuestion()) {{
-            setRepeats(false);
-            start();
-        }};
+        // next question delay
+        Timer t = new Timer(400, e -> {
+            if (gameTimer != null && gameTimer.isRunning()) {
+                generateQuestion();
+            }
+        });
+
+        t.setRepeats(false);
+        t.start();
     }
 
     // =========================================================
@@ -237,31 +253,47 @@ public class MathGameScreen {
     // =========================================================
     private void startTimer() {
 
-        gameTimer = new Timer(1000, e -> {
+    gameTimer = new Timer(1000, e -> {
 
-            timeLeft--;
-            timerLabel.setText("Time: " + timeLeft);
+        if (isGameOver) {
+            gameTimer.stop();
+            return;
+        }
 
-            if (timeLeft <= 5) {
-                timerLabel.setForeground(Color.RED);
-            }
+        timeLeft--;
+        timerLabel.setText("Time: " + timeLeft);
 
-            if (timeLeft <= 0) {
-                gameTimer.stop();
-                endGame("Time's up");
-            }
-        });
+        if (timeLeft <= 5) {
+            timerLabel.setForeground(Color.RED);
+        }
 
-        gameTimer.start();
-    }
+        if (timeLeft <= 0) {
+            timeLeft = 0; // force stable state
+            timerLabel.setText("Time: 0");
 
+            gameTimer.stop();
+
+            SwingUtilities.invokeLater(() -> {
+                endGame("Time Up");
+            });
+        }
+    });
+
+    gameTimer.start();
+}
     // =========================================================
     // GAME END
     // =========================================================
     private void endGame(String reason) {
 
-        if (gameTimer != null) gameTimer.stop();
+        if (isGameOver) return;   // prevent duplicate calls
+        isGameOver = true;
 
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+
+        // update high score
         if (difficulty.equals("Easy") && score > highScoreEasy)
             highScoreEasy = score;
         else if (difficulty.equals("Medium") && score > highScoreMedium)
@@ -271,8 +303,10 @@ public class MathGameScreen {
 
         saveHighScores();
 
-        new MathGameOver(reason, score, getHighScore(), difficulty);
-        frame.dispose();
+        SwingUtilities.invokeLater(() -> {
+            new MathGameOver(reason, score, getHighScore(), difficulty);
+            frame.dispose();
+        });
     }
 
     // =========================================================
@@ -320,9 +354,9 @@ public class MathGameScreen {
             bw.write(highScoreHard + "\n");
             bw.flush();
             bw.close();
-            System.out.println("✅ High scores saved - Easy: " + highScoreEasy + ", Medium: " + highScoreMedium + ", Hard: " + highScoreHard);
+            System.out.println(" High scores saved - Easy: " + highScoreEasy + ", Medium: " + highScoreMedium + ", Hard: " + highScoreHard);
         } catch (Exception e) {
-            System.out.println("❌ Save error: " + e.getMessage());
+            System.out.println(" Save error: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -2,7 +2,6 @@ package MATH.service;
 
 /*
  * OOP: ABSTRACTION
- * WHY:
  * - Defines high score behavior
  */
 

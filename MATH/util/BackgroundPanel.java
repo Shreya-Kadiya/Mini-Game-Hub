@@ -13,8 +13,8 @@ import java.io.File;
  * - Used by ALL screens (GUI reuse = OOP benefit)
  *
  * CONCEPT USED:
- * ✔ Encapsulation → image is private
- * ✔ Reusability → used across multiple screens
+ * Encapsulation → image is private
+ * Reusability → used across multiple screens
  */
 
 

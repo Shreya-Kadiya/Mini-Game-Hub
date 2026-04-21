@@ -3,9 +3,9 @@ package MATH.service;
 import java.io.*;
 
 /*
- * OOP:
- * - ABSTRACTION (implements interface)
- * - ENCAPSULATION (file logic hidden)
+  OOP:
+  - ABSTRACTION (implements interface)
+  - ENCAPSULATION (file logic hidden)
  */
 
 public class FileHighScoreService implements HighScoreService {
