@@ -68,6 +68,8 @@ public class WordJumbleScreen {
 
         resetAttempts(); // game setup
 
+
+
         Font font = new Font("Arial", Font.BOLD, 20);
 
         // ================= LABEL INIT (UI ONLY) =================

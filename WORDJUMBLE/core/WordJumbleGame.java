@@ -33,6 +33,7 @@ public class WordJumbleGame {
             generator = new HardWordGenerator();
     }
 
+
     public void nextWord() {
         currentWord = generator.getWord();
     }
