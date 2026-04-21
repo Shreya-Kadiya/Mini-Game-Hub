@@ -1,8 +1,10 @@
-
+package Sudoku_4_4;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import Sudoku_4_4.util.BackgroundPanel;
+import Sudoku_4_4.util.RoundedButton;
 
 
 public class SudokuGUI {
@@ -32,7 +34,7 @@ public class SudokuGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        BackgroundPanel panel = new BackgroundPanel("src/Sudoku.png");
+        BackgroundPanel panel = new BackgroundPanel("images/Sudoku.png");
         
 
         //back button
@@ -44,7 +46,7 @@ public class SudokuGUI {
        
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              new Dashboard(); 
+              // new Dashboard(); 
               frame.dispose(); 
         });     
     

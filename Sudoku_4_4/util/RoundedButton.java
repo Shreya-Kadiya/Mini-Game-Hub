@@ -1,18 +1,22 @@
+package Sudoku_4_4.util;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 
+/*
+ * Custom UI component
+ */
+
 public class RoundedButton extends JButton {
 
-    boolean hover = false;
-    boolean pressed = false;
+    private boolean hover = false;
+    private boolean pressed = false;
 
-    //  Custom colors
-    private Color normalColor;
-    private Color hoverColor;
-    private Color pressedColor;
+    private Color normal;
+    private Color hoverC;
+    private Color pressC;
 
-    
     public RoundedButton(String text) {
         this(text, 
             new Color(70, 130, 180), 
@@ -20,48 +24,37 @@ public class RoundedButton extends JButton {
             new Color(50, 100, 150));
     }
 
-   
-    public RoundedButton(String text, Color normal, Color hover, Color pressed) {
+    public RoundedButton(String text, Color n, Color h, Color p) {
         super(text);
 
-        this.normalColor = normal;
-        this.hoverColor = hover;
-        this.pressedColor = pressed;
+        normal = n;
+        hoverC = h;
+        pressC = p;
 
         setFocusPainted(false);
         setContentAreaFilled(false);
         setBorderPainted(false);
         setOpaque(false);
 
-        setForeground(Color.WHITE);// Text color
+        setForeground(Color.WHITE);
         setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 18));
-       
 
         addMouseListener(new MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                RoundedButton.this.hover = true;
-                repaint();
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                hover = true; repaint();
             }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                RoundedButton.this.hover = false;
-                RoundedButton.this.pressed = false;
-                repaint();
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                hover = false; pressed = false; repaint();
             }
-
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                RoundedButton.this.pressed = true;
-                repaint();
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                pressed = true; repaint();
             }
-
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                RoundedButton.this.pressed = false;
-                repaint();
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                pressed = false; repaint();
             }
         });
     }
 
-    //  Painting the button
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
 
@@ -73,21 +66,21 @@ public class RoundedButton extends JButton {
 
         int offset = pressed ? 3 : 0;
 
-        //  Shadow (depth effect)
+        // Shadow (depth effect)
         g2.setColor(new Color(0, 0, 0, 80));
         g2.fillRoundRect(3, 5, width - 6, height - 3, 30, 30);
 
         // Button color based on state
         if (pressed) {
-            g2.setColor(pressedColor);
+            g2.setColor(pressC);
         } else if (hover) {
-            g2.setColor(hoverColor);
+            g2.setColor(hoverC);
         } else {
-            g2.setColor(normalColor);
+            g2.setColor(normal);
         }
         g2.fillRoundRect(0, offset, width, height - offset, 30, 30);
 
-        //  Border
+        // Border
         g2.setColor(new Color(255, 255, 255, 120));
         g2.drawRoundRect(0, offset, width - 1, height - offset - 1, 30, 30);
 

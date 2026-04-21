@@ -1,6 +1,9 @@
+package Sudoku_4_4;
 
 import javax.swing.*;
 import java.awt.*;
+import Sudoku_4_4.util.BackgroundPanel;
+import Sudoku_4_4.util.RoundedButton;
 
 public class SudokuGameOver {
     private static String reason;
@@ -11,7 +14,7 @@ public class SudokuGameOver {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        BackgroundPanel panel = new BackgroundPanel("src/Sudoku.png");
+        BackgroundPanel panel = new BackgroundPanel("images/Sudoku.png");
 
         // Reason
         JLabel reasonLabel = new JLabel(reason);
@@ -85,7 +88,7 @@ public class SudokuGameOver {
         HomeBtn.setFont(new Font("Arial", Font.BOLD, 18));
 
         HomeBtn.addActionListener(e -> {
-            new Dashboard();
+            // new Dashboard();
             frame.dispose();
         });
 

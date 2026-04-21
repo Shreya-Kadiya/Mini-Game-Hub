@@ -1,3 +1,4 @@
+package Sudoku_4_4;
 
     import javax.swing.*;
     import java.awt.*;
@@ -5,7 +6,8 @@
     import java.io.File;
     import java.io.FileReader;
     import java.io.FileWriter;
-    
+    import Sudoku_4_4.util.BackgroundPanel;
+    import Sudoku_4_4.util.RoundedButton;
 
     public class SudokuScreen {
 
@@ -45,7 +47,7 @@
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-            BackgroundPanel panel = new BackgroundPanel("src/Sudoku.png");
+            BackgroundPanel panel = new BackgroundPanel("images/Sudoku.png");
             frame.setContentPane(panel);
 
             RoundedButton backButton = new RoundedButton("Back",
