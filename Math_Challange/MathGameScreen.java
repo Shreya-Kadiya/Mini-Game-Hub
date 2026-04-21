@@ -289,7 +289,7 @@ public class MathGameScreen {
 
     private void createFileIfNotExists() {
         try {
-            File file = new File("highscore.txt");
+            File file = new File("Math_Challange/highscore.txt");
             if (!file.exists()) {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(file));
                 bw.write("0\n0\n0\n");

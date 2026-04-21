@@ -11,11 +11,7 @@ public class WordJumbleOvenrScreen {
 
         BackgroundPanel panel = new BackgroundPanel("src/Word Jumble.png");
 
-        // Reason
-        JLabel reasonLabel = new JLabel("Life Lost!");
-        reasonLabel.setBounds(700, 250, 400, 40);
-        reasonLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        reasonLabel.setForeground(Color.RED);
+        
 
         // Title
         JLabel title = new JLabel("GAME OVER");
@@ -89,7 +85,6 @@ public class WordJumbleOvenrScreen {
 
         // Add components
         panel.add(title);
-        panel.add(reasonLabel);
         panel.add(playAgain);
         panel.add(backBtn);
         panel.add(HomeBtn);

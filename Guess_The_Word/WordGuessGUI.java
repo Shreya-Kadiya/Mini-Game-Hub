@@ -37,7 +37,7 @@ public class WordGuessGUI {
         });     
     
 
-            
+        
        //How to play button
        RoundedButton HTP = new RoundedButton("How to play",
                     new Color(5, 72, 149), // normal
