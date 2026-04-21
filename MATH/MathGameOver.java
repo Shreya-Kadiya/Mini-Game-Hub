@@ -14,7 +14,7 @@ public class MathGameOver {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // ✅ FIXED IMAGE PATH (images folder)
+        //  FIXED IMAGE PATH (images folder)
         BackgroundPanel panel = new BackgroundPanel("images/MathSolve.png");
 
         // ================= REASON =================
@@ -29,22 +29,21 @@ public class MathGameOver {
         title.setFont(new Font("Arial", Font.BOLD, 40));
         title.setForeground(Color.BLUE);
 
-        // ================= SCORE =================
         JLabel scoreLabel = new JLabel("Score: " + score);
         scoreLabel.setBounds(700, 400, 400, 40);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 35));
         scoreLabel.setForeground(Color.BLUE);
 
-        // ================= HIGH SCORE =================
-        if (score > highScore) {
+        if(score >= highScore) {
 
-            JLabel newHigh = new JLabel("New High Score!");
+            JLabel newHigh = new JLabel("");
+            newHigh.setText("New High Score!");
             newHigh.setBounds(650, 450, 400, 40);
             newHigh.setForeground(Color.GREEN.darker());
             newHigh.setFont(new Font("Arial", Font.BOLD, 35));
             panel.add(newHigh);
-
-        } else {
+        }
+        else{          
 
             JLabel highScoreLabel = new JLabel("High Score: " + highScore);
             highScoreLabel.setBounds(700, 440, 400, 40);
@@ -52,6 +51,7 @@ public class MathGameOver {
             highScoreLabel.setForeground(Color.BLUE);
             panel.add(highScoreLabel);
         }
+
 
         // ================= PLAY AGAIN =================
         RoundedButton playAgain = new RoundedButton(

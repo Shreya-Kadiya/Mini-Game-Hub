@@ -266,7 +266,7 @@ public class MathGameScreen {
             highScoreEasy = score;
         else if (difficulty.equals("Medium") && score > highScoreMedium)
             highScoreMedium = score;
-        else
+        else if (difficulty.equals("Hard") && score > highScoreHard)
             highScoreHard = score;
 
         saveHighScores();
@@ -318,9 +318,12 @@ public class MathGameScreen {
             bw.write(highScoreEasy + "\n");
             bw.write(highScoreMedium + "\n");
             bw.write(highScoreHard + "\n");
+            bw.flush();
             bw.close();
+            System.out.println("✅ High scores saved - Easy: " + highScoreEasy + ", Medium: " + highScoreMedium + ", Hard: " + highScoreHard);
         } catch (Exception e) {
-            System.out.println("Save error");
+            System.out.println("❌ Save error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
