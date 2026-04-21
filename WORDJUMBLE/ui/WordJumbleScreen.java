@@ -454,7 +454,7 @@ void handleCorrectAnswer() {
 
     roundLabel.setText("Round: " + currentRound + "/" + totalRounds);
 
-    //  ADD THIS LINE (fix for attempts not visible)
+    //  ADD THIS LINE 
     if (difficulty.equals("Easy")) {
         attemptsLabel.setText("Attempts left: " + attempts );
     } else {
