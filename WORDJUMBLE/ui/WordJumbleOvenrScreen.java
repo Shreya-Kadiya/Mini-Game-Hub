@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import WORDJUMBLE.util.BackgroundPanel;
 import WORDJUMBLE.util.RoundedButton;
+import Main.home;
 
 public class WordJumbleOvenrScreen {
 
@@ -96,7 +97,7 @@ public class WordJumbleOvenrScreen {
         HomeBtn.setFont(new Font("Arial", Font.BOLD, 18));
 
         HomeBtn.addActionListener(e -> {
-            // new Dashboard();
+            new home();
             frame.dispose();
         });
 

@@ -1,6 +1,14 @@
+package Main;
 
 import javax.swing.*;
 import java.awt.*;
+
+import GuessTheWord.*;
+import WORDJUMBLE.ui.*;
+import Sudoku_4_4.*;
+import MATH.*;
+import GuessTheWord.util.BackgroundPanel;
+import GuessTheWord.util.RoundedButton;
 
 
 
@@ -31,13 +39,10 @@ class RoundedPanel extends JPanel {
     }
 }
 
+public class home
+ {
 
-
-
-
-public class Dashboard {
-
-    public Dashboard() {
+    public home() {
         JFrame frame = new JFrame("Mini Game Hub");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -78,10 +83,10 @@ public class Dashboard {
             playBtn.addActionListener(e -> {
                 
                 switch (index) {
-                    case 0: new SudokuGUI(); break;
-                    case 1: new WordJumbleGUI(); break;
-                    case 2: new MATH.MathChallangeGUI(); break;
-                    case 3: new WordGuessGUI(); break;
+                    case 0 -> new SudokuGUI();
+                    case 1 -> new WordJumbleGUI();
+                    case 2 -> new MathChallangeGUI();
+                    case 3 -> new WordGuessGUI();
                 }
                 frame.dispose();
             });
@@ -103,6 +108,6 @@ public class Dashboard {
     }
 
     public static void main(String[] args) {
-        new Dashboard();
+        new home();
     }
 }

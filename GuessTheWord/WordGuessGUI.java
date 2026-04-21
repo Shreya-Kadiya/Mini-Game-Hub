@@ -5,10 +5,9 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import GuessTheWord.service.FileHighScoreService;
 import GuessTheWord.util.BackgroundPanel;
 import GuessTheWord.util.RoundedButton;
-
+import Dashboard.Dashboard;
 
 
 
@@ -39,7 +38,7 @@ public class WordGuessGUI {
        
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              // new Dashboard(); 
+              new Dashboard(); 
               frame.dispose();
         });     
     

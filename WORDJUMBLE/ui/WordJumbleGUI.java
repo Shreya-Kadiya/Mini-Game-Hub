@@ -6,6 +6,7 @@ import java.io.*;
 
 import WORDJUMBLE.util.BackgroundPanel;
 import WORDJUMBLE.util.RoundedButton;
+import Dashboard.Dashboard;
 public class WordJumbleGUI {
 
     // ================= HIGH SCORE STATE (ENCAPSULATION) =================
@@ -40,7 +41,7 @@ public class WordJumbleGUI {
 
         backButton.setBounds(20, 20, 100, 40);
         backButton.addActionListener(e -> {
-            // new Dashboard();
+            new Dashboard();
             frame.dispose();
         });
 
@@ -154,7 +155,7 @@ public class WordJumbleGUI {
     void loadHighScore() {
 
         try {
-            File file = new File("Word_Jumble/wordjumble_highscore.txt");
+            File file = new File("WORDJUMBLE/wordjumble_highscore.txt");
             if (!file.exists()) return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
