@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.*;
 import WORDJUMBLE.util.BackgroundPanel;
 import WORDJUMBLE.util.RoundedButton;
+import javax.swing.Timer;
 
 public class WordJumbleScreen {
 
@@ -14,13 +15,14 @@ public class WordJumbleScreen {
 
     String difficulty;
 
-    // ================= UI COMPONENTS =================
     JLabel scoreLabel, streakLabel, LifeLabel, questionLabel,
             resultLabel, highScoreLabel, attemptsLabel, roundLabel;
 
     JTextField answerField;
+    Color normalColor = Color.BLACK;
+    Color correctColor = new Color(0, 160, 0); // green
+    Color wrongColor = Color.RED;
 
-    // ================= GAME STATE (ENCAPSULATION) =================
     int score = 0;
     int streak = 0;
     int lives = 2;
@@ -36,23 +38,17 @@ public class WordJumbleScreen {
 
     boolean isGameOver = false;
 
-    // ================= HIGH SCORE (STATIC = SHARED STATE) =================
     static int highScoreEasy = 0;
     static int highScoreMedium = 0;
     static int highScoreHard = 0;
 
-    // ================= UTIL =================
     Random random = new Random();
     ArrayList<String> usedWords = new ArrayList<>();
 
-    // ================= WORD BANK =================
     String[] easyWords = {"apple","ball","cat","dog","book","tree","fish","milk","pen","cup"};
     String[] mediumWords = {"table","chair","water","bread","light","plant","clock","paper","money"};
     String[] hardWords = {"people","number","system","family","school","friend","doctor","market"};
 
-    // =========================================================
-    // CONSTRUCTOR (UI + INITIALIZATION)
-    // =========================================================
     WordJumbleScreen(String difficulty) {
 
         this.difficulty = difficulty;
@@ -64,15 +60,11 @@ public class WordJumbleScreen {
         panel = new BackgroundPanel("images/WordJ_bg.jpg");
         panel.setLayout(null);
 
-        loadHighScore(); // file I/O (persistence)
-
-        resetAttempts(); // game setup
-
-
+        loadHighScore();
+        resetAttempts();
 
         Font font = new Font("Arial", Font.BOLD, 20);
 
-        // ================= LABEL INIT (UI ONLY) =================
         scoreLabel = new JLabel("Score: 0");
         scoreLabel.setBounds(450, 200, 200, 30);
         scoreLabel.setFont(font);
@@ -92,14 +84,16 @@ public class WordJumbleScreen {
         questionLabel = new JLabel("WORD", JLabel.CENTER);
         questionLabel.setBounds(500, 290, 500, 60);
         questionLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        
 
         answerField = new JTextField();
         answerField.setBounds(600, 350, 300, 40);
 
-        resultLabel = new JLabel("", JLabel.CENTER);
+        resultLabel = new JLabel("Enter answer", JLabel.CENTER);
         resultLabel.setBounds(500, 400, 500, 40);
+        resultLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-        attemptsLabel = new JLabel();
+        attemptsLabel = new JLabel("Attempts left: " + attempts);
         attemptsLabel.setBounds(790, 250, 200, 30);
         attemptsLabel.setFont(font);
 
@@ -107,7 +101,6 @@ public class WordJumbleScreen {
         roundLabel.setBounds(590, 250, 200, 30);
         roundLabel.setFont(font);
 
-        // ================= BUTTONS =================
         RoundedButton submitBtn = createSubmitButton();
         RoundedButton skipBtn = createSkipButton();
         RoundedButton hintBtn = createHintButton();
@@ -115,7 +108,6 @@ public class WordJumbleScreen {
         RoundedButton finishBtn = createFinishButton();
         RoundedButton rulesBtn = createRulesButton();
 
-        // ================= ADD UI =================
         panel.add(scoreLabel);
         panel.add(streakLabel);
         panel.add(LifeLabel);
@@ -125,7 +117,6 @@ public class WordJumbleScreen {
         panel.add(resultLabel);
         panel.add(attemptsLabel);
         panel.add(roundLabel);
-
         panel.add(submitBtn);
         panel.add(skipBtn);
         panel.add(hintBtn);
@@ -139,13 +130,10 @@ public class WordJumbleScreen {
         updateUI();
 
         SwingUtilities.invokeLater(() -> answerField.requestFocusInWindow());
-
         frame.setVisible(true);
     }
 
-    // =========================================================
-    // OOP: BUTTON FACTORY METHODS (CLEAN STRUCTURE)
-    // =========================================================
+    // ================= BUTTONS =================
 
     private RoundedButton createSubmitButton() {
         RoundedButton btn = new RoundedButton("Submit",
@@ -169,7 +157,20 @@ public class WordJumbleScreen {
 
         btn.setBounds(720, 450, 100, 40);
 
-        btn.addActionListener(e -> skipWord());
+        btn.addActionListener(e -> {
+            if (isGameOver) return;
+
+            if (score < getSkipPenalty()) {
+                resultLabel.setText("Need " + getSkipPenalty() + " points!");
+                return;
+            }
+
+            applySkipPenalty();
+            streak = 0;
+            generateWord();
+            updateUI();
+        });
+
         return btn;
     }
 
@@ -181,7 +182,24 @@ public class WordJumbleScreen {
 
         btn.setBounds(850, 450, 100, 40);
 
-        btn.addActionListener(e -> useHint());
+        btn.addActionListener(e -> {
+            if (isGameOver) return;
+
+            if (score < getHintPenalty()) {
+                resultLabel.setText("Need " + getHintPenalty() + " points!");
+                return;
+            }
+
+            if (hintsUsed == 0)
+                resultLabel.setText("Starts: " + currentWord.charAt(0));
+            else
+                resultLabel.setText("Ends: " + currentWord.charAt(currentWord.length() - 1));
+
+            hintsUsed++;
+            applyHintPenalty();
+            updateUI();
+        });
+
         return btn;
     }
 
@@ -194,6 +212,7 @@ public class WordJumbleScreen {
         btn.setBounds(20, 20, 100, 40);
 
         btn.addActionListener(e -> {
+            isGameOver = true;
             frame.dispose();
             new WordJumbleGUI();
         });
@@ -210,6 +229,7 @@ public class WordJumbleScreen {
         btn.setBounds(1200, 20, 100, 40);
 
         btn.addActionListener(e -> gameOver());
+
         return btn;
     }
 
@@ -222,14 +242,15 @@ public class WordJumbleScreen {
         btn.setBounds(250, 20, 100, 40);
 
         btn.addActionListener(e -> showRules());
+
         return btn;
     }
 
-    // =========================================================
-    // CORE GAME LOGIC METHODS (CLEAN OOP SEPARATION)
-    // =========================================================
+    // ================= GAME LOGIC =================
 
     void handleSubmit() {
+
+        if (isGameOver) return;
 
         String userAnswer = answerField.getText().trim().toLowerCase();
 
@@ -247,165 +268,170 @@ public class WordJumbleScreen {
         answerField.setText("");
     }
 
-    void handleCorrectAnswer() {
+void handleCorrectAnswer() {
 
-        streak++;
+    if (isGameOver) return;
 
-        int used = maxAttempts - attempts + 1;
-        int points = (difficulty.equals("Easy")) ? (used == 1 ? 10 : 5)
-                : (difficulty.equals("Medium")) ? (used == 1 ? 15 : 10)
-                : (used == 1 ? 20 : 15);
+    streak++;
 
-        score += points;
+    int used = maxAttempts - attempts + 1;
 
-        if (streak % 5 == 0) {
-            score += 10;
-            resultLabel.setText("Streak Bonus +10!");
-        } else {
-            resultLabel.setText("Correct +" + points);
-        }
+    int points = (difficulty.equals("Easy")) ? (used == 1 ? 10 : 5)
+            : (difficulty.equals("Medium")) ? (used == 1 ? 15 : 10)
+            : (used == 1 ? 20 : 15);
 
+    score += points;
+
+    if (streak % 5 == 0) score += 10;
+
+    resultLabel.setForeground(correctColor);
+    resultLabel.setText("Correct!");
+
+    // small delay so user sees green
+    Timer t = new Timer(400, e -> {
         generateWord();
         updateUI();
-    }
+    });
+
+    t.setRepeats(false);
+    t.start();
+}
 
     void handleWrongAnswer() {
 
-        streak = 0;
-        attempts--;
+    if (isGameOver) return;
+
+    streak = 0;
+    attempts--;
+
+    resultLabel.setForeground(wrongColor);
+    resultLabel.setText("Wrong Answer!");
+
+    // show wrong for 0.5 sec
+    Timer t = new Timer(500, e -> {
 
         if (attempts > 0) {
-            resultLabel.setText("Wrong! Try again");
-        } else {
+            resultLabel.setForeground(normalColor);
+            resultLabel.setText("Try again");
+        } 
+        else {
             lives--;
-            resultLabel.setText("Answer: " + currentWord);
+            resultLabel.setForeground(normalColor);
+            resultLabel.setText("Correct Answer: " + currentWord);
+
             generateWord();
         }
 
-        if (lives == 0) gameOver();
-
-        updateUI();
-    }
-
-    void skipWord() {
-
-        if (score < getSkipPenalty()) {
-            resultLabel.setText("Need " + getSkipPenalty() + " points!");
-            return;
-        }
-
-        applySkipPenalty();
-        streak = 0;
-
-        generateWord();
-        updateUI();
-    }
-
-    void useHint() {
-
-        if (score < getHintPenalty()) {
-            resultLabel.setText("Need " + getHintPenalty() + " points!");
-            return;
-        }
-
-        if (hintsUsed == 0)
-            resultLabel.setText("Starts: " + currentWord.charAt(0));
-        else
-            resultLabel.setText("Ends: " + currentWord.charAt(currentWord.length() - 1));
-
-        hintsUsed++;
-        applyHintPenalty();
-        updateUI();
-    }
-
-
-
-    // =========================================================
-// RULES POPUP (UI LOGIC SEPARATION)
-// =========================================================
-void showRules() {
-
-    String message = "SCORE SYSTEM\n\n";
-
-    if (difficulty.equals("Easy")) {
-        message += "Easy Mode:\n" +
-                "+10 correct\n" +
-                "-2 hint / skip\n" +
-                "Attempts: 1\n" +
-                "Lives: 2";
-    } 
-    else if (difficulty.equals("Medium")) {
-        message += "Medium Mode:\n" +
-                "+15 (1st try)\n" +
-                "+10 (2nd try)\n" +
-                "-3 hint | -4 skip\n" +
-                "Attempts: 2\n" +
-                "Lives: 2";
-    } 
-    else {
-        message += "Hard Mode:\n" +
-                "+20 (1st try)\n" +
-                "+15 (2nd try)\n" +
-                "-5 hint | -6 skip\n" +
-                "Attempts: 2\n" +
-                "Lives: 2";
-    }
-
-    message += "\n\nBonus:\n+10 every 5 correct";
-
-    JOptionPane.showMessageDialog(
-            frame,
-            message,
-            "Score Info",
-            JOptionPane.INFORMATION_MESSAGE
-    );
-}
-
-
-    // =========================================================
-    // WORD GENERATION
-    // =========================================================
-
-    void generateWord() {
-
-        hintsUsed = 0;
-        resetAttempts();
-
-        currentRound++;
-        if (currentRound > totalRounds) {
+        if (lives <= 0) {
             gameOver();
             return;
         }
 
+        updateUI();
+    });
+
+    t.setRepeats(false);
+    t.start();
+}
+
+    // ================= WORD GENERATION =================
+
+    void generateWord() {
+
+        if (isGameOver) return;
+        
+        hintsUsed = 0;
+        resetAttempts();
+
         String[] list = getWordList();
+
+        if (usedWords.size() >= list.length) usedWords.clear();
 
         do {
             currentWord = list[random.nextInt(list.length)];
         } while (usedWords.contains(currentWord));
 
         usedWords.add(currentWord);
-        jumbledWord = shuffle(currentWord);
 
+        jumbledWord = shuffleWord(currentWord);
         questionLabel.setText(jumbledWord);
+        resultLabel.setForeground(normalColor);
+        resultLabel.setText("Enter answer");
+
+        currentRound++;
     }
 
-    String shuffle(String word) {
+    String shuffleWord(String word) {
 
-        char[] arr = word.toCharArray();
+        if (word.length() <= 2) return word;
 
-        for (int i = 0; i < arr.length; i++) {
-            int j = random.nextInt(arr.length);
-            char t = arr[i];
-            arr[i] = arr[j];
-            arr[j] = t;
-        }
+        String shuffled;
 
-        return new String(arr);
+        do {
+            char[] letters = word.toCharArray();
+
+            int swaps = difficulty.equals("Easy") ? letters.length :
+                        difficulty.equals("Medium") ? letters.length - 2 :
+                        letters.length - 3;
+
+            for (int i = 0; i < swaps; i++) {
+                int j = random.nextInt(letters.length);
+                char temp = letters[i];
+                letters[i] = letters[j];
+                letters[j] = temp;
+            }
+
+            shuffled = new String(letters);
+
+        } while (shuffled.equals(word));
+
+        return shuffled;
     }
 
-    // =========================================================
-    // UTIL METHODS
-    // =========================================================
+
+    void showRules() {
+
+    String message = "WORD JUMBLE GAME RULES\n\n";
+
+    if (difficulty.equals("Easy")) {
+        message += "EASY MODE:\n" +
+                "- 1 attempt per word\n" +
+                "- +10 points (first try)\n" +
+                "- +5 points (second try)\n" +
+                "- Hint penalty: -2 points\n" +
+                "- Skip penalty: -2 points\n" +
+                "- Lives: 2\n";
+    } 
+    else if (difficulty.equals("Medium")) {
+        message += "MEDIUM MODE:\n" +
+                "- 2 attempts per word\n" +
+                "- +15 points (first try)\n" +
+                "- +10 points (second try)\n" +
+                "- Hint penalty: -3 points\n" +
+                "- Skip penalty: -4 points\n" +
+                "- Lives: 2\n";
+    } 
+    else {
+        message += "HARD MODE:\n" +
+                "- 2 attempts per word\n" +
+                "- +20 points (first try)\n" +
+                "- +15 points (second try)\n" +
+                "- Hint penalty: -5 points\n" +
+                "- Skip penalty: -6 points\n" +
+                "- Lives: 2\n";
+    }
+
+    message += "\nBONUS RULE:\n+10 points every 5 correct answers";
+
+    JOptionPane.showMessageDialog(
+            frame,
+            message,
+            "Game Rules",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+}
+
+    // ================= UTIL =================
 
     String[] getWordList() {
         if (difficulty.equals("Easy")) return easyWords;
@@ -414,23 +440,30 @@ void showRules() {
     }
 
     void resetAttempts() {
-        attempts = (difficulty.equals("Easy")) ? 1 : 2;
+        attempts = difficulty.equals("Easy") ? 1 : 2;
         maxAttempts = attempts;
     }
 
     void updateUI() {
-        scoreLabel.setText("Score: " + score);
-        streakLabel.setText("Streak: " + streak);
-        LifeLabel.setText("Lives: " + lives);
-        roundLabel.setText("Round: " + currentRound + "/" + totalRounds);
 
-        attemptsLabel.setText(
-                difficulty.equals("Easy") ? "Only 1 attempt"
-                        : "Attempts: " + attempts
-        );
+    if (isGameOver) return;
+
+    scoreLabel.setText("Score: " + score);
+    streakLabel.setText("Streak: " + streak);
+    LifeLabel.setText("Lives: " + lives);
+
+    roundLabel.setText("Round: " + currentRound + "/" + totalRounds);
+
+    //  ADD THIS LINE (fix for attempts not visible)
+    if (difficulty.equals("Easy")) {
+        attemptsLabel.setText("Attempts left: " + attempts );
+    } else {
+        attemptsLabel.setText("Attempts left: " + attempts );
     }
+}
 
-    // penalties
+    // ================= SCORE =================
+
     int getHintPenalty() {
         return difficulty.equals("Easy") ? 2 :
                difficulty.equals("Medium") ? 3 : 5;
@@ -449,9 +482,7 @@ void showRules() {
         score = Math.max(0, score - getSkipPenalty());
     }
 
-    // =========================================================
-    // HIGH SCORE (FILE IO)
-    // =========================================================
+    // ================= HIGH SCORE =================
 
     int getHighScore() {
         return difficulty.equals("Easy") ? highScoreEasy :
@@ -483,21 +514,14 @@ void showRules() {
         }
     }
 
-    // =========================================================
-    // GAME OVER
-    // =========================================================
+    // ================= GAME OVER =================
 
     void gameOver() {
 
         if (isGameOver) return;
         isGameOver = true;
 
-        if (difficulty.equals("Easy") && score > highScoreEasy)
-            highScoreEasy = score;
-        else if (difficulty.equals("Medium") && score > highScoreMedium)
-            highScoreMedium = score;
-        else if (difficulty.equals("Hard") && score > highScoreHard)
-            highScoreHard = score;
+        answerField.setEnabled(false);
 
         saveHighScore();
 
@@ -505,7 +529,6 @@ void showRules() {
         frame.dispose();
     }
 
-    // =========================================================
     public static void main(String[] args) {
         new WordJumbleScreen("Easy");
     }

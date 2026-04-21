@@ -13,7 +13,7 @@ public class WordJumbleOvenrScreen {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // FIXED: safer image path (DO NOT change UI, only reliability fix)
+        // safer image path (DO NOT change UI, only reliability fix)
         BackgroundPanel panel = new BackgroundPanel("images/Word Jumble.png");
 
         // ================= TITLE =================
