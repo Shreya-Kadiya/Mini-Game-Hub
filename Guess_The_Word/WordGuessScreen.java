@@ -470,26 +470,14 @@ void applyMasking() {
 
 
 
-void showFinalResult() {
+    void showFinalResult() {
 
-    boolean isNewHigh = totalScore > highScore;
+        saveHighScore();
 
-    if (isNewHigh) {
-        highScore = totalScore;
+        new WordGuessOverScreen(totalScore, highScore, difficulty);
+
+        frame.dispose(); // close game
     }
-
-    saveHighScore();
-    highScoreLabel.setText("High Score: " + highScore);
-
-    if (isNewHigh) {
-        resultLabel.setText("🔥 New High Score!");
-        resultLabel.setForeground(Color.ORANGE);
-    }
-
-    new WordGuessOverScreen(totalScore, highScore, difficulty);
-
-    frame.dispose(); // close game
-}
 
 
 void saveHighScore() {
@@ -498,7 +486,7 @@ void saveHighScore() {
 
         java.io.File file = new java.io.File("Guess_The_Word/GTW_highscore.txt");
 
-        // ✅ Read old scores
+        //Read old scores
         if (file.exists()) {
             java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(file));
 

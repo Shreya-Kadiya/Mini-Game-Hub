@@ -26,7 +26,7 @@ public class WordJumbleOvenrScreen {
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 35));
         scoreLabel.setForeground(Color.BLUE);
 
-        if(score >= highScore) {
+        if(score > highScore) {
 
             JLabel newHigh = new JLabel("");
             newHigh.setText("New High Score!");

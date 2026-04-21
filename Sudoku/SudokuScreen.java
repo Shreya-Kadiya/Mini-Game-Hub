@@ -4,8 +4,9 @@
     import java.io.File;
     import java.io.FileReader;
     import java.io.FileWriter;
+    
 
-    public class SudokuScreen{
+    public class SudokuScreen {
 
         int[][] solutionBoard = new int[4][4];
         int[][] puzzleBoard = new int[4][4];
@@ -113,6 +114,8 @@
                     gridPanel.add(cell);
                 }
             }
+
+
 
             copyToInitialPuzzle();
             loadPuzzleToUI();

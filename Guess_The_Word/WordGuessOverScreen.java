@@ -25,7 +25,7 @@ public class WordGuessOverScreen {
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 35));
         scoreLabel.setForeground(Color.BLUE);
 
-        if(score >= highScore) {
+        if(score > highScore) {
 
             JLabel newHigh = new JLabel("");
             newHigh.setText("New High Score!");
@@ -93,6 +93,6 @@ public class WordGuessOverScreen {
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        new WordGuessOverScreen (2, 15, "Medium");
+        new WordGuessOverScreen (16, 15, "Medium");
     }
 }
