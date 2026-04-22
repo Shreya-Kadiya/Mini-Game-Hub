@@ -6,7 +6,7 @@ import java.io.*;
 
 import WORDJUMBLE.util.BackgroundPanel;
 import WORDJUMBLE.util.RoundedButton;
-import Dashboard.Dashboard;
+import Main.home;
 public class WordJumbleGUI {
 
     // ================= HIGH SCORE STATE (ENCAPSULATION) =================
@@ -41,7 +41,7 @@ public class WordJumbleGUI {
 
         backButton.setBounds(20, 20, 100, 40);
         backButton.addActionListener(e -> {
-            new Dashboard();
+            new home();
             frame.dispose();
         });
 

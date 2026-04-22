@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import MATH.util.BackgroundPanel;
 import MATH.util.RoundedButton;
+import Main.home;
 
 
 
@@ -95,7 +96,7 @@ public class MathGameOver {
         HomeBtn.setBounds(420, 520, 200, 50);
 
         HomeBtn.addActionListener(e -> {
-            // new Dashboard();
+            new home();
             frame.dispose();
         });
 

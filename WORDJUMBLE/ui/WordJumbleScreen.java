@@ -7,7 +7,7 @@ import java.util.*;
 import WORDJUMBLE.util.BackgroundPanel;
 import WORDJUMBLE.util.RoundedButton;
 import javax.swing.Timer;
-import Dashboard.Dashboard;
+
 public class WordJumbleScreen {
 
     JFrame frame;

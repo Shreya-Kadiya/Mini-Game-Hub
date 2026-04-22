@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.*;
 import Sudoku_4_4.util.BackgroundPanel;
 import Sudoku_4_4.util.RoundedButton;
+import Main.home;
 
 
 public class SudokuGUI {
@@ -46,7 +47,7 @@ public class SudokuGUI {
        
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              // new Dashboard(); 
+              new home(); 
               frame.dispose(); 
         });     
     

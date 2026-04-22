@@ -5,7 +5,7 @@ import javax.swing.*;
 import MATH.service.FileHighScoreService;
 import MATH.util.BackgroundPanel;
 import MATH.util.RoundedButton;
-
+import Main.home;
 
 
 public class MathChallangeGUI {
@@ -39,7 +39,7 @@ public class MathChallangeGUI {
         backButton.setBounds(20, 20, 100, 40);
 
         backButton.addActionListener(e -> {
-            // new Dashboard();
+            new home();
             frame.dispose();
         });
 

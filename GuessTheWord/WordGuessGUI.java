@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.FileReader;
 import GuessTheWord.util.BackgroundPanel;
 import GuessTheWord.util.RoundedButton;
-import Dashboard.Dashboard;
+import Main.home;
+
 
 
 
@@ -38,7 +39,7 @@ public class WordGuessGUI {
        
        backButton.setBounds(20, 20, 100, 40);
          backButton.addActionListener(e -> {
-              new Dashboard(); 
+              new home();
               frame.dispose();
         });     
     

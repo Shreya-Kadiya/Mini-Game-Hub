@@ -591,9 +591,10 @@ package Sudoku_4_4;
                 highScoreHard = Math.max(highScoreHard, score);
             }
 
-            saveHighScore();
+            
 
             new SudokuGameOver(reason, score, getHighScore(), difficultyLevel);
+            saveHighScore();
 
             frame.dispose();
         }
@@ -617,39 +618,46 @@ package Sudoku_4_4;
         // HIGH SCORE 
 
         void saveHighScore() {
-            try {
-                File file = new File(System.getProperty("user.dir"), "Sudoku/Sudoku_highscore.txt");
+        try {
+            File dir = new File(System.getProperty("user.dir"), "Sudoku");
+            if (!dir.exists()) dir.mkdirs(); 
+
+            File file = new File(dir, "Sudoku/Sudoku_highscore.txt");
+
+            FileWriter fw = new FileWriter(file);
+            fw.write(highScoreEasy + "\n");
+            fw.write(highScoreMedium + "\n");
+            fw.write(highScoreHard + "\n");
+            fw.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+       void loadHighScore() {
+        try {
+            File dir = new File(System.getProperty("user.dir"), "Sudoku");
+            if (!dir.exists()) dir.mkdirs(); 
+
+            File file = new File(dir, "Sudoku/Sudoku_highscore.txt");
+
+            if (!file.exists()) {
                 FileWriter fw = new FileWriter(file);
-                fw.write(highScoreEasy + "\n");
-                fw.write(highScoreMedium + "\n");
-                fw.write(highScoreHard + "\n");
+                fw.write("0\n0\n0");
                 fw.close();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            highScoreEasy = Integer.parseInt(br.readLine());
+            highScoreMedium = Integer.parseInt(br.readLine());
+            highScoreHard = Integer.parseInt(br.readLine());
+            br.close();
+
+        } catch (Exception e) {
+            highScoreEasy = highScoreMedium = highScoreHard = 0;
         }
-
-        void loadHighScore() {
-            try {
-                File file = new File(System.getProperty("user.dir"), "Sudoku/Sudoku_highscore.txt");
-
-                if (!file.exists()) {
-                    FileWriter fw = new FileWriter(file);
-                    fw.write("0\n0\n0");
-                    fw.close();
-                }
-
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                highScoreEasy = Integer.parseInt(br.readLine());
-                highScoreMedium = Integer.parseInt(br.readLine());
-                highScoreHard = Integer.parseInt(br.readLine());
-                br.close();
-
-            } catch (Exception e) {
-                highScoreEasy = highScoreMedium = highScoreHard = 0;
-            }
-        }
-
+    }
         //UI helpers
 
         void highlightCells(java.util.List<int[]> pos, Color c) {

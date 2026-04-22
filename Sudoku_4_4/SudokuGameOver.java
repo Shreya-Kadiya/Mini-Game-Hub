@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import Sudoku_4_4.util.BackgroundPanel;
 import Sudoku_4_4.util.RoundedButton;
+import Main.home;
 
 public class SudokuGameOver {
     private static String reason;
@@ -35,7 +36,7 @@ public class SudokuGameOver {
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 35));
         scoreLabel.setForeground(Color.BLUE);
 
-        if(score > highScore) {
+        if(score >= highScore) {
 
             JLabel newHigh = new JLabel("");
             newHigh.setText("New High Score!");
@@ -88,7 +89,7 @@ public class SudokuGameOver {
         HomeBtn.setFont(new Font("Arial", Font.BOLD, 18));
 
         HomeBtn.addActionListener(e -> {
-            // new Dashboard();
+            new home();
             frame.dispose();
         });
 

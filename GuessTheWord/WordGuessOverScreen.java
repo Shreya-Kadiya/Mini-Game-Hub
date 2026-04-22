@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import GuessTheWord.util.BackgroundPanel;
 import GuessTheWord.util.RoundedButton;
-import Dashboard.Dashboard;
+import Main.home;
 
 public class WordGuessOverScreen {
 
@@ -83,7 +83,7 @@ public class WordGuessOverScreen {
         HomeBtn.setFont(new Font("Arial", Font.BOLD, 18));
 
         HomeBtn.addActionListener(e -> {
-            new Dashboard();
+            new home();
             frame.dispose();
         });
 
