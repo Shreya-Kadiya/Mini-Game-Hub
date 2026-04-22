@@ -1,32 +1,48 @@
 # 🎮 Mini Game Hub
 
-A Java Swing-based desktop application featuring multiple mini-games such as Sudoku and Math Challenge.  
-The project demonstrates OOP principles, GUI development, and file handling in Java.
+A Java Swing-based desktop application featuring multiple mini-games built using Object-Oriented Programming (OOP), file handling, and GUI concepts.
 
 ---
 
-## 📌 Features
+## 📌 Games Included
 
 ### 🧩 Sudoku 4x4
 - Auto-generated puzzle board
-- Solution validation system
-- Mistake counter
+- Solution validation
+- Mistake tracking
 - Fixed vs editable cells
 
-### ➕ Math Challenge Game
+---
+
+### ➕ Math Challenge
 - Random math questions
 - Score tracking system
 - Game over screen
-- High score saving
+- High score saving using file handling
 
-### 🎨 UI System
+---
+
+### 🧠 Guess the Word
+- Random word guessing game
+- Hint-based gameplay
+- Limited attempts system
+- Improves vocabulary and logic
+
+---
+
+### 🔀 Word Jumble
+- Jumbled word puzzle
+- User must rearrange letters correctly
+- Score-based system
+- Increases problem-solving speed
+
+---
+
+## 🎨 UI Components
+
 - Custom Background Panel
-- Rounded Button UI component
-- Consistent Swing-based design
-
-### 💾 Data Persistence
-- High scores saved using `.txt` files
-- Java file handling (BufferedReader, FileWriter)
+- Rounded Button Design
+- Consistent Swing-based UI theme
 
 ---
 
@@ -35,10 +51,10 @@ The project demonstrates OOP principles, GUI development, and file handling in J
 - Object-Oriented Programming (OOP)
   - Encapsulation
   - Abstraction
-  - Modular design
-- Event-driven programming (Swing listeners)
-- File handling in Java
-- GUI development using Swing & AWT
+  - Modular class design
+- Event-driven programming (Swing)
+- File handling (BufferedReader, FileWriter)
+- GUI development using Java Swing & AWT
 
 ---
 
@@ -50,5 +66,3 @@ The project demonstrates OOP principles, GUI development, and file handling in J
 - File I/O
 
 ---
-
-## 📂 Project Structure
